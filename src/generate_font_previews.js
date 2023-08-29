@@ -8,7 +8,7 @@ const TextToSVG = require('text-to-svg');
 /**
  * Internal dependencies
  */
-const { GOOGLE_FONTS_FILE_PATH, GOOGLE_FONTS_WITH_PREVIEWS_FILE_PATH } = require('./constants');
+const { GOOGLE_FONTS_FILE_PATH, GOOGLE_FONTS_WITH_PREVIEWS_FILE_PATH, SVG_PREVIEWS_BASE_URL } = require('./constants');
 
 
 function getFamilies() {
@@ -23,6 +23,11 @@ function updateGoogleFontsFileWithPreviews(newFontFamilies) {
     content.fontFamilies = newFontFamilies;
     fs.writeFileSync(GOOGLE_FONTS_WITH_PREVIEWS_FILE_PATH, JSON.stringify(content, null, 2));
 }
+
+function getPreviewUrl(family, face, isAFamilyPreview) {
+    const fileName = getPreviewFilename(family, face, isAFamilyPreview);
+    return `${SVG_PREVIEWS_BASE_URL}${family.slug}/${fileName}`;
+};
 
 function getPreviewFilename(family, face, isAFamilyPreview) {
     const name = isAFamilyPreview
@@ -72,7 +77,7 @@ function generatePreviews() {
 
     if (fs.existsSync("./output/previews")) {
         // Wipes out the previews directory.
-        fs.rmdirSync("./output/previews", { recursive: true });
+        fs.rmSync("./output/previews", { recursive: true });
     } else {
         // Creates the previews directory.
         fs.mkdirSync("./output/previews", { recursive: true });
@@ -84,7 +89,7 @@ function generatePreviews() {
         try {
             console.log(`ℹ️  Generating SVG previews for ${family.name} (${i + 1}/${families.length})`);
             generateFontFamilyPreview(family);
-            updatedFamily.preview = getPreviewFilename(family, null, true);
+            updatedFamily.preview = getPreviewUrl(family, null, true);
             familiesSuccessCount++;
         } catch (error) {
             console.error(`❎  Error generating preview for ${family.name}: ${error}`);
@@ -95,7 +100,7 @@ function generatePreviews() {
             const face = family.fontFace[x];
             try {
                 generateFontFacePreview(family, face);
-                updatedFamily.fontFace.push({ ...face, preview: getPreviewFilename(family, face, false) });
+                updatedFamily.fontFace.push({ ...face, preview: getPreviewUrl(family, face, false) });
                 facesSuccessCount++;
             } catch (error) {
                 console.error(`❎  Error generating preview for ${family.name} ${face.fontWeight} ${face.fontStyle}: ${error}`);
