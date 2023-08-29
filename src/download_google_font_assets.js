@@ -1,14 +1,14 @@
 /**
  * External dependencies
  */
-const fs = require( 'fs' );
-const https = require( "https" );
-const path = require( "path" );
+const fs = require('fs');
+const https = require("https");
+const path = require("path");
 
 /**
  * Internal dependencies
  */
-const { GOOGLE_FONTS_FILE_PATH } = require( './constants' );
+const { GOOGLE_FONTS_FILE_PATH } = require('./constants');
 
 
 function getFamilies() {
@@ -23,18 +23,18 @@ async function downloadFile(url, destPath) {
     fs.mkdirSync(directoryPath, { recursive: true });
 
     return new Promise((resolve, reject) => {
-      const file = fs.createWriteStream(destPath);
-      const request = https.get(url, function(response) {
-        response.pipe(file);
-        file.on('finish', function() {
-          file.close(resolve);  // close() is async, call resolve after close completes.
+        const file = fs.createWriteStream(destPath);
+        const request = https.get(url, function (response) {
+            response.pipe(file);
+            file.on('finish', function () {
+                file.close(resolve);  // close() is async, call resolve after close completes.
+            });
+        }).on('error', function (err) { // Handle errors
+            fs.unlink(destPath); // Delete the file async. (But we don't check the result)
+            reject(err.message);
         });
-      }).on('error', function(err) { // Handle errors
-        fs.unlink(destPath); // Delete the file async. (But we don't check the result)
-        reject(err.message);
-      });
     });
-  }
+}
 
 async function downloadFontFamilies() {
 
@@ -47,15 +47,15 @@ async function downloadFontFamilies() {
 
     for (let i = 0; i < families.length; i++) {
         console.info(`ℹ️  Downloading ${families[i].name} (${i + 1}/${families.length})`);
-        for ( let x = 0; x < families[i].fontFace.length; x++ ) {
+        for (let x = 0; x < families[i].fontFace.length; x++) {
             facesCount++;
 
             const url = families[i].fontFace[x]['src'];
             const relativePath = url.replace("https://fonts.gstatic.com/s/", "");
-            const destPath = "./" + path.join( "font-assets/", relativePath );
-            
+            const destPath = "./" + path.join("font-assets/", relativePath);
+
             try {
-                await downloadFile( url, destPath );
+                await downloadFile(url, destPath);
                 facesSuccessCount++;
                 console.log(`✅ Downloaded to ${destPath}`);
             } catch (error) {
@@ -63,10 +63,10 @@ async function downloadFontFamilies() {
             }
             console.log("");
         }
-        
+
     }
 
-    if ( facesCount === facesSuccessCount ) {
+    if (facesCount === facesSuccessCount) {
         console.log(`🏅  Downloaded ${facesSuccessCount} of ${facesCount} font faces.`);
     } else {
         console.warn(`🚩  Downloaded ${facesSuccessCount} of ${facesCount} font faces. Check for errors.`);

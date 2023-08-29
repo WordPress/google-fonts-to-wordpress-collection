@@ -1,29 +1,29 @@
 /**
  * External dependencies
  */
-const fs = require( 'fs' );
-const crypto = require( 'crypto' );
+const fs = require('fs');
+const crypto = require('crypto');
 
 /**
  * Internal dependencies
  */
-const { API_URL, API_KEY, GOOGLE_FONTS_FILE_PATH } = require( './constants' );
+const { API_URL, API_KEY, GOOGLE_FONTS_FILE_PATH } = require('./constants');
 
 
-function getCategories( fonts ) {
+function getCategories(fonts) {
 	const categories = new Set();
-	fonts.forEach( ( font ) => {
-		categories.add( font.category );
-	} );
+	fonts.forEach((font) => {
+		categories.add(font.category);
+	});
 	// Returs an array of categories
-	return [ ...categories ];
+	return [...categories];
 }
 
-function calculateHash( somestring ) {
+function calculateHash(somestring) {
 	return crypto
-		.createHash( 'md5' )
-		.update( somestring )
-		.digest( 'hex' )
+		.createHash('md5')
+		.update(somestring)
+		.digest('hex')
 		.toString();
 }
 
@@ -36,38 +36,38 @@ const GOOGLE_FONT_FALLBACKS = {
 	monospace: 'monospace',
 };
 
-function getStyleFromGoogleVariant( variant ) {
-	return variant.includes( 'italic' ) ? 'italic' : 'normal';
+function getStyleFromGoogleVariant(variant) {
+	return variant.includes('italic') ? 'italic' : 'normal';
 }
 
-function getWeightFromGoogleVariant( variant ) {
+function getWeightFromGoogleVariant(variant) {
 	return variant === 'regular' || variant === 'italic'
 		? '400'
-		: variant.replace( 'italic', '' );
+		: variant.replace('italic', '');
 }
 
-function getFallbackForGoogleFont( googleFontCategory ) {
-	return GOOGLE_FONT_FALLBACKS[ googleFontCategory ] || 'system-ui';
+function getFallbackForGoogleFont(googleFontCategory) {
+	return GOOGLE_FONT_FALLBACKS[googleFontCategory] || 'system-ui';
 }
 
-function httpToHttps( url ) {
-	return url.replace( 'http://', 'https://' );
+function httpToHttps(url) {
+	return url.replace('http://', 'https://');
 }
 
-function getFontFamilyFromGoogleFont( font ) {
+function getFontFamilyFromGoogleFont(font) {
 	return {
 		name: font.family,
-		fontFamily: `${ font.family }, ${ getFallbackForGoogleFont(
+		fontFamily: `${font.family}, ${getFallbackForGoogleFont(
 			font.category
-		) }`,
-		slug: font.family.replace( /\s+/g, '-' ).toLowerCase(),
+		)}`,
+		slug: font.family.replace(/\s+/g, '-').toLowerCase(),
 		category: font.category,
-		fontFace: font.variants.map( ( variant ) => ( {
-			src: httpToHttps( font.files?.[ variant ] ),
-			fontWeight: getWeightFromGoogleVariant( variant ),
-			fontStyle: getStyleFromGoogleVariant( variant ),
+		fontFace: font.variants.map((variant) => ({
+			src: httpToHttps(font.files?.[variant]),
+			fontWeight: getWeightFromGoogleVariant(variant),
+			fontStyle: getStyleFromGoogleVariant(variant),
 			fontFamily: font.family,
-		} ) ),
+		})),
 	};
 }
 
@@ -77,36 +77,36 @@ async function updateFiles() {
 	let response;
 
 	try {
-		newApiData = await fetch( `${ API_URL }${ API_KEY }` );
+		newApiData = await fetch(`${API_URL}${API_KEY}`);
 		response = await newApiData.json();
-		const fontFamilies = response.items.map( getFontFamilyFromGoogleFont );
-		const categories = getCategories( response.items );
+		const fontFamilies = response.items.map(getFontFamilyFromGoogleFont);
+		const categories = getCategories(response.items);
 		newData = { fontFamilies, categories };
-	} catch ( error ) {
+	} catch (error) {
 		// TODO: show in UI and remove console statement
 		// eslint-disable-next-line
-		console.error( '❎  Error fetching the Google Fonts API:', error );
-		process.exit( 1 );
+		console.error('❎  Error fetching the Google Fonts API:', error);
+		process.exit(1);
 	}
 
-	if ( response.items ) {
-		const newDataString = JSON.stringify( newData, null, 2 );
+	if (response.items) {
+		const newDataString = JSON.stringify(newData, null, 2);
 
-		const oldFileData = fs.readFileSync( GOOGLE_FONTS_FILE_PATH, 'utf8' );
-		const oldData = JSON.parse( oldFileData );
-		const oldDataString = JSON.stringify( oldData, null, 2 );
+		const oldFileData = fs.readFileSync(GOOGLE_FONTS_FILE_PATH, 'utf8');
+		const oldData = JSON.parse(oldFileData);
+		const oldDataString = JSON.stringify(oldData, null, 2);
 
 		if (
-			calculateHash( newDataString ) !== calculateHash( oldDataString )
+			calculateHash(newDataString) !== calculateHash(oldDataString)
 		) {
-			fs.writeFileSync( GOOGLE_FONTS_FILE_PATH, newDataString );
+			fs.writeFileSync(GOOGLE_FONTS_FILE_PATH, newDataString);
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line
-			console.info( '✅  Google Fonts JSON file updated' );
+			console.info('✅  Google Fonts JSON file updated');
 		} else {
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line
-			console.info( 'ℹ️  Google Fonts JSON file is up to date' );
+			console.info('ℹ️  Google Fonts JSON file is up to date');
 		}
 	} else {
 		// TODO: show in UI and remove console statement
@@ -114,7 +114,7 @@ async function updateFiles() {
 		console.error(
 			'❎  No new data to check. Check the Google Fonts API key.'
 		);
-		process.exit( 1 );
+		process.exit(1);
 	}
 }
 
