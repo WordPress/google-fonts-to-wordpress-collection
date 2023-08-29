@@ -1,0 +1,24 @@
+{
+  "name": "google-fonts-to-wordpress-collection",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "api": "node src/get_google_fonts.js",
+    "files" : "node src/download_google_font_assets.js",
+    "previews": "node src/generate_font_previews.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection/issues"
+  },
+  "homepage": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection#readme",
+  "dependencies": {
+    "text-to-svg": "^3.1.5"
+  }
+}
