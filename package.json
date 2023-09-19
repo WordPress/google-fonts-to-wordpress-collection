@@ -1,8 +1,7 @@
 {
   "name": "google-fonts-to-wordpress-collection",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Creates a WordPress Font Library collection from Google Fonts API and generated SVG previews",
   "scripts": {
     "api": "node src/get_google_fonts.js",
     "files" : "node src/download_google_font_assets.js",
@@ -13,7 +12,7 @@
     "url": "git+https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "GPL-2.0-or-later",
   "bugs": {
     "url": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection/issues"
   },
