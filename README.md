@@ -22,7 +22,7 @@ npm install
 - Gets a copy of the list of fonts provided by Google Fonts API.
 - Transform the list provided by Google Fonts API in a WordPress `theme.json` like format to be compatible with the new WordPress Font Library collections.
 ```
-GOOGLE_FONTS_API_KEY=abc123 npm run API
+GOOGLE_FONTS_API_KEY=abc123 npm run api
 ```
 ---
 
