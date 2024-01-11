@@ -7,7 +7,7 @@ const crypto = require('crypto');
 /**
  * Internal dependencies
  */
-const { API_URL, API_KEY, GOOGLE_FONTS_FILE_PATH } = require('./constants');
+const { API_URL, API_KEY, GOOGLE_FONTS_FILE_PATH, GOOGLE_FONTS_CAPABILITY } = require('./constants');
 
 
 function getCategories(fonts) {
@@ -77,7 +77,7 @@ async function updateFiles() {
 	let response;
 
 	try {
-		newApiData = await fetch(`${API_URL}${API_KEY}`);
+		newApiData = await fetch(`${API_URL}${API_KEY}&capability=${GOOGLE_FONTS_CAPABILITY}`);
 		response = await newApiData.json();
 		const fontFamilies = response.items.map(getFontFamilyFromGoogleFont);
 		const categories = getCategories(response.items);
