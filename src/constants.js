@@ -1,7 +1,7 @@
 // Google Fonts API constants
 const API_URL = "https://www.googleapis.com/webfonts/v1/webfonts?key=";
 const API_KEY = process.env.GOOGLE_FONTS_API_KEY;
-const GOOGLE_FONTS_CAPABILITY = "WOFF2";
+const GOOGLE_FONTS_CAPABILITY = "&capability=WOFF2";
 
 // File paths
 const GOOGLE_FONTS_FILE_PATH = "./releases/gutenberg-17.6/google-fonts.json";

@@ -102,7 +102,7 @@ async function updateFiles() {
 	let response;
 	
 	try {
-		newApiData = await fetch(`${API_URL}${API_KEY}&capability=${GOOGLE_FONTS_CAPABILITY}`);
+		newApiData = await fetch(`${API_URL}${API_KEY}${GOOGLE_FONTS_CAPABILITY}`);
 		response = await newApiData.json();
 	} catch (error) {
 		// TODO: show in UI and remove console statement
