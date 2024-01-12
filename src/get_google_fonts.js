@@ -119,7 +119,7 @@ async function updateFiles() {
 		"$schema": FONT_COLLECTION_SCHEMA_URL,
 		"version": FONT_COLLECTION_SCHEMA_VERSION,
 		categories,
-		font_families:fontFamilies, 
+		font_families: fontFamilies, 
 	};
 
 	if (response.items) {

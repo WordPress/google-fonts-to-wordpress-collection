@@ -14,7 +14,7 @@ const { GOOGLE_FONTS_FILE_PATH } = require('./constants');
 function getFamilies() {
     const googleFontsFile = fs.readFileSync(GOOGLE_FONTS_FILE_PATH, "utf8");
     const googleFonts = JSON.parse(googleFontsFile);
-    return googleFonts.fontFamilies;
+    return googleFonts.font_families;
 }
 
 async function downloadFile(url, destPath) {
@@ -46,11 +46,11 @@ async function downloadFontFamilies() {
     let facesSuccessCount = 0;
 
     for (let i = 0; i < families.length; i++) {
-        console.info(`ℹ️  Downloading ${families[i].name} (${i + 1}/${families.length})`);
-        for (let x = 0; x < families[i].fontFace.length; x++) {
+        console.info(`ℹ️  Downloading ${families[i].font_family_settings.name} (${i + 1}/${families.length})`);
+        for (let x = 0; x < families[i].font_family_settings.fontFace.length; x++) {
             facesCount++;
 
-            const url = families[i].fontFace[x]['src'];
+            const url = families[i].font_family_settings.fontFace[x]['src'];
             const relativePath = url.replace("https://fonts.gstatic.com/s/", "");
             const destPath = "./" + path.join("font-assets/", relativePath);
 
