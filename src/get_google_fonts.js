@@ -7,16 +7,39 @@ const crypto = require('crypto');
 /**
  * Internal dependencies
  */
-const { API_URL, API_KEY, GOOGLE_FONTS_FILE_PATH, GOOGLE_FONTS_CAPABILITY } = require('./constants');
+const {
+	API_URL,
+	API_KEY,
+  GOOGLE_FONTS_CAPABILITY,
+	GOOGLE_FONTS_FILE_PATH,
+	FONT_COLLECTION_SCHEMA_URL,
+	FONT_COLLECTION_SCHEMA_VERSION,
+} = require('./constants');
 
+
+function formatCategoryName(slug) {
+	return slug
+		// Split the string into an array of words
+		.split('-')
+		// Capitalize the first letter of each word
+		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+		// Join the words back into a single string, separated by spaces
+		.join(' ');
+}
 
 function getCategories(fonts) {
-	const categories = new Set();
+	const category_slugs = new Set();
 	fonts.forEach((font) => {
-		categories.add(font.category);
+		category_slugs.add( font.category );
 	});
 	// Returs an array of categories
-	return [...categories];
+	const categories = [...category_slugs].map((slug) => (
+		{
+			name: formatCategoryName( slug ),
+			slug,
+		}
+	));
+	return categories;
 }
 
 function calculateHash(somestring) {
@@ -56,18 +79,20 @@ function httpToHttps(url) {
 
 function getFontFamilyFromGoogleFont(font) {
 	return {
-		name: font.family,
-		fontFamily: `${font.family}, ${getFallbackForGoogleFont(
-			font.category
-		)}`,
-		slug: font.family.replace(/\s+/g, '-').toLowerCase(),
-		category: font.category,
-		fontFace: font.variants.map((variant) => ({
-			src: httpToHttps(font.files?.[variant]),
-			fontWeight: getWeightFromGoogleVariant(variant),
-			fontStyle: getStyleFromGoogleVariant(variant),
-			fontFamily: font.family,
-		})),
+		font_family_settings: {
+			name: font.family,
+			fontFamily: `${font.family}, ${getFallbackForGoogleFont(
+				font.category
+			)}`,
+			slug: font.family.replace(/\s+/g, '-').toLowerCase(),
+			fontFace: font.variants.map((variant) => ({
+				src: httpToHttps(font.files?.[variant]),
+				fontWeight: getWeightFromGoogleVariant(variant),
+				fontStyle: getStyleFromGoogleVariant(variant),
+				fontFamily: font.family,
+			})),
+		},
+		categories: [ font.category ],
 	};
 }
 
@@ -75,13 +100,10 @@ async function updateFiles() {
 	let newApiData;
 	let newData;
 	let response;
-
+	
 	try {
 		newApiData = await fetch(`${API_URL}${API_KEY}&capability=${GOOGLE_FONTS_CAPABILITY}`);
 		response = await newApiData.json();
-		const fontFamilies = response.items.map(getFontFamilyFromGoogleFont);
-		const categories = getCategories(response.items);
-		newData = { fontFamilies, categories };
 	} catch (error) {
 		// TODO: show in UI and remove console statement
 		// eslint-disable-next-line
@@ -89,8 +111,24 @@ async function updateFiles() {
 		process.exit(1);
 	}
 
+	const fontFamilies = response.items.map(getFontFamilyFromGoogleFont);
+	const categories = getCategories(response.items);
+
+	// The data to be written to the file
+	newData = {
+		"$schema": FONT_COLLECTION_SCHEMA_URL,
+		"version": FONT_COLLECTION_SCHEMA_VERSION,
+		categories,
+		font_families:fontFamilies, 
+	};
+
 	if (response.items) {
 		const newDataString = JSON.stringify(newData, null, 2);
+		
+		// If the file doesn't exist, create it
+		if ( ! fs.existsSync( GOOGLE_FONTS_FILE_PATH ) ) {
+			fs.writeFileSync(GOOGLE_FONTS_FILE_PATH, '{}');
+		}
 
 		const oldFileData = fs.readFileSync(GOOGLE_FONTS_FILE_PATH, 'utf8');
 		const oldData = JSON.parse(oldFileData);
