@@ -10,8 +10,7 @@ const crypto = require('crypto');
 const {
 	API_URL,
 	API_KEY,
-	GOOGLE_FONTS_CAPABILITY,
-	GOOGLE_FONTS_FILE,
+	GOOGLE_FONTS_FILE_PATH,
 	FONT_COLLECTION_SCHEMA_URL,
 	FONT_COLLECTION_SCHEMA_VERSION,
 } = require('./constants');
@@ -102,7 +101,7 @@ async function updateFiles() {
 	let response;
 	
 	try {
-		newApiData = await fetch(`${API_URL}${API_KEY}${GOOGLE_FONTS_CAPABILITY}`);
+		newApiData = await fetch(`${API_URL}${API_KEY}`);
 		response = await newApiData.json();
 	} catch (error) {
 		// TODO: show in UI and remove console statement
@@ -119,25 +118,25 @@ async function updateFiles() {
 		"$schema": FONT_COLLECTION_SCHEMA_URL,
 		"version": FONT_COLLECTION_SCHEMA_VERSION,
 		categories,
-		font_families: fontFamilies, 
+		font_families:fontFamilies, 
 	};
 
 	if (response.items) {
 		const newDataString = JSON.stringify(newData, null, 2);
 		
 		// If the file doesn't exist, create it
-		if ( ! fs.existsSync( GOOGLE_FONTS_FILE ) ) {
-			fs.writeFileSync(GOOGLE_FONTS_FILE, '{}');
+		if ( ! fs.existsSync( GOOGLE_FONTS_FILE_PATH ) ) {
+			fs.writeFileSync(GOOGLE_FONTS_FILE_PATH, '{}');
 		}
 
-		const oldFileData = fs.readFileSync(GOOGLE_FONTS_FILE, 'utf8');
+		const oldFileData = fs.readFileSync(GOOGLE_FONTS_FILE_PATH, 'utf8');
 		const oldData = JSON.parse(oldFileData);
 		const oldDataString = JSON.stringify(oldData, null, 2);
 
 		if (
 			calculateHash(newDataString) !== calculateHash(oldDataString)
 		) {
-			fs.writeFileSync(GOOGLE_FONTS_FILE, newDataString);
+			fs.writeFileSync(GOOGLE_FONTS_FILE_PATH, newDataString);
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line
 			console.info('✅  Google Fonts JSON file updated');

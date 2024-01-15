@@ -24,26 +24,18 @@ npm install
 ```
 GOOGLE_FONTS_API_KEY=abc123 npm run api
 ```
-
----
-- Iterates over the list of font families and for each one:
-- Downloads the font family assets.
-- Uses the font face downloaded assets to generate SVG format images with the font previews.
-- Generates a new JSON file, including the preview images link.
-```
-npm run previews
-```
-
---- 
-
-## Extra utilities:
-
-Download all the font files
 ---
 
 - Downloads each one of the font assets for the 1500+ families available.
 ```
 npm run files
+```
+---
+
+- Uses the font face downloaded assets to generate SVG format images with the font previews.
+- Generates a new JSON file, including the preview images link.
+```
+npm run previews
 ```
 
 ## Requierements

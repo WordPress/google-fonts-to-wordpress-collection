@@ -1,7 +1,2 @@
-.DS_Store
-font-assets/*
 node_modules
-
-# Ignore the downloaded font assets
-**/font-assets/**
-output
+font-assets/*
