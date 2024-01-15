@@ -1,6 +1,7 @@
 // Google Fonts API constants
 const API_URL = "https://www.googleapis.com/webfonts/v1/webfonts?key=";
 const API_KEY = process.env.GOOGLE_FONTS_API_KEY;
+const GOOGLE_FONTS_CAPABILITY = "&capability=WOFF2";
 
 // File paths
 const DOWNLOAD_FOLDER = "font-assets";
