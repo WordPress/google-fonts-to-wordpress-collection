@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection#readme",
   "dependencies": {
-    "text-to-svg": "^3.1.5"
+    "text-to-svg": "^3.1.5",
+    "woff2": "^1.0.0"
   }
 }

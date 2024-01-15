@@ -10,7 +10,6 @@ const https = require("https");
  */
 const { CURRENT_RELEASE } = require("./constants");
 
-
 function releasePath( addPath  = '' ) {
   return path.resolve( __dirname, '..', 'releases', CURRENT_RELEASE, addPath );
 }
