@@ -16,18 +16,21 @@ function releasePath( addPath  = '' ) {
 }
 
 async function downloadFile(url, destPath) {
+    const tempPath = destPath + ".tmp";
     const directoryPath = path.dirname(destPath);
     fs.mkdirSync(directoryPath, { recursive: true });
 
     return new Promise((resolve, reject) => {
-        const file = fs.createWriteStream(destPath);
+        const file = fs.createWriteStream(tempPath);
         const request = https.get(url, function (response) {
             response.pipe(file);
-            file.on('finish', function () {
-                file.close(resolve);  // close() is async, call resolve after close completes.
+            // move temp file to destPath
+            file.on('close', function () {
+                fs.renameSync(tempPath, destPath);
+                resolve();
             });
         }).on('error', function (err) { // Handle errors
-            fs.unlink(destPath); // Delete the file async. (But we don't check the result)
+            fs.unlink(tempPath); // Delete the file async. (But we don't check the result)
             reject(err.message);
         });
     });
