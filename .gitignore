@@ -1,4 +1,4 @@
 .DS_Store
-node_modules
 font-assets/*
+node_modules
 output
