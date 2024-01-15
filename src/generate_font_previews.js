@@ -132,4 +132,17 @@ async function generatePreviews() {
 
 }
 
+// Run on script termination.
+function processExitHandler() {
+    console.log("---------------------------------------------------------------------");
+    console.error( `❎ Script terminated. The previews files generated were not added to ${GOOGLE_FONTS_WITH_PREVIEWS_FILE} file.` );
+    console.log("---------------------------------------------------------------------");
+    process.exit();
+}
+
+// Run on manual process interruption.
+process.on('SIGINT', processExitHandler);
+process.on('SIGTERM', processExitHandler);
+
+// Run the script.
 generatePreviews();
