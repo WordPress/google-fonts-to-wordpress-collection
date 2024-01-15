@@ -1,4 +1,4 @@
 node_modules
 
 # Ignore the downloaded font assets
-*/font-assets/*
+**/font-assets/**
