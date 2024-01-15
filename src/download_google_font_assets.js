@@ -7,7 +7,7 @@ const path = require("path");
 /**
  * Internal dependencies
  */
-const { GOOGLE_FONTS_FILE, DOWNLOAD_FOLDER } = require('./constants');
+const { GOOGLE_FONTS_FILE } = require('./constants');
 const { releasePath, downloadFile } = require('./utils');
 
 
