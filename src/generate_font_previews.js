@@ -14,7 +14,7 @@ const { GOOGLE_FONTS_FILE_PATH, GOOGLE_FONTS_WITH_PREVIEWS_FILE_PATH, SVG_PREVIE
 function getFamilies() {
     const googleFontsFile = fs.readFileSync(GOOGLE_FONTS_FILE_PATH, "utf8");
     const googleFonts = JSON.parse(googleFontsFile);
-    return googleFonts.fontFamilies;
+    return googleFonts.font_families;
 }
 
 function updateGoogleFontsFileWithPreviews(newFontFamilies) {
@@ -84,7 +84,7 @@ function generatePreviews() {
     }
 
     for (let i = 0; i < families.length; i++) {
-        const family = families[i];
+        const family = families[i].font_family_settings;
         const updatedFamily = { ...family, fontFace: [] };
         try {
             console.log(`ℹ️  Generating SVG previews for ${family.name} (${i + 1}/${families.length})`);
