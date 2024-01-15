@@ -8,20 +8,23 @@ const TextToSVG = require('text-to-svg');
 /**
  * Internal dependencies
  */
-const { GOOGLE_FONTS_FILE_PATH, GOOGLE_FONTS_WITH_PREVIEWS_FILE_PATH, SVG_PREVIEWS_BASE_URL } = require('./constants');
-
+const { GOOGLE_FONTS_FILE, GOOGLE_FONTS_WITH_PREVIEWS_FILE, SVG_PREVIEWS_BASE_URL, DOWNLOAD_FOLDER, PREVIEWS_FOLDER } = require('./constants');
+const { releasePath, downloadFile } = require('./utils');
 
 function getFamilies() {
-    const googleFontsFile = fs.readFileSync(GOOGLE_FONTS_FILE_PATH, "utf8");
-    const googleFonts = JSON.parse(googleFontsFile);
+    const googleFontsFile = fs.readFileSync(
+        releasePath( GOOGLE_FONTS_FILE ),
+        "utf8"
+    );
+    const googleFonts = JSON.parse( googleFontsFile );
     return googleFonts.font_families;
 }
 
 function updateGoogleFontsFileWithPreviews(newFontFamilies) {
-    const googleFontsFile = fs.readFileSync(GOOGLE_FONTS_FILE_PATH, "utf8");
+    const googleFontsFile = fs.readFileSync(GOOGLE_FONTS_FILE, "utf8");
     const content = JSON.parse(googleFontsFile);
-    content.fontFamilies = newFontFamilies;
-    fs.writeFileSync(GOOGLE_FONTS_WITH_PREVIEWS_FILE_PATH, JSON.stringify(content, null, 2));
+    content.font_families = newFontFamilies;
+    fs.writeFileSync( releasePath( GOOGLE_FONTS_WITH_PREVIEWS_FILE ) , JSON.stringify(content, null, 2));
 }
 
 function getPreviewUrl(family, face, isAFamilyPreview) {
@@ -36,22 +39,31 @@ function getPreviewFilename(family, face, isAFamilyPreview) {
     return `${name}.svg`;
 }
 
-function generateFontFacePreview(family, face, isAFamilyPreview) {
+async function generateFontFacePreview(family, face, isAFamilyPreview) {
     const text = isAFamilyPreview
         ? family.name
         : `${family.name} ${face.fontWeight} ${face.fontStyle}`;
 
+    const downloadFolder =releasePath( DOWNLOAD_FOLDER );
+    const localFontPath = face.src.replace("https://fonts.gstatic.com/s", downloadFolder);
+    
+    // Downloads font asset if it doesn't exist and if its not empty.
+    if ( !fs.existsSync( localFontPath ) ) {
+        await downloadFile( face.src, localFontPath );
+    }
+
     // Loads font asset.
-    const fontAssetPath = face.src.replace("https://fonts.gstatic.com/s/", "./font-assets/");
+    const fontAssetPath = face.src.replace("https://fonts.gstatic.com/s", downloadFolder);
     const textToSVG = TextToSVG.loadSync(fontAssetPath);
+
     // Generates SVG.
     const attributes = { fill: 'black' };
     const options = { x: 0, y: 0, fontSize: 24, anchor: 'top', attributes: attributes };
     const svgMarkup = textToSVG.getSVG(text, options);
 
+    // Saves SVG file.
     const fileName = getPreviewFilename(family, face, isAFamilyPreview);
-    const svgPath = `./output/previews/${family.slug}/${fileName}`;
-
+    const svgPath = releasePath( `${PREVIEWS_FOLDER}/${family.slug}/${fileName}` );
     const directoryPath = path.dirname(svgPath);
 
     // Writes the SVG file.
@@ -61,13 +73,13 @@ function generateFontFacePreview(family, face, isAFamilyPreview) {
     console.log(`✅ Generated ${svgPath}`);
 }
 
-function generateFontFamilyPreview(family) {
+async function generateFontFamilyPreview(family) {
     // Select the font face to make the preview (try to get 400, normal if it's there)
     const face = family.fontFace.find((face) => face.fontWeight === '400' && face.fontStyle === 'normal') || family.fontFace[0];
-    generateFontFacePreview(family, face, family.name, true);
+    await generateFontFacePreview(family, face, family.name, true);
 }
 
-function generatePreviews() {
+async function generatePreviews() {
     const families = getFamilies();
     const familiesCount = families.length;
     let familiesSuccessCount = 0;
@@ -75,20 +87,12 @@ function generatePreviews() {
     let facesSuccessCount = 0;
     const updatedFontFamilies = [];
 
-    if (fs.existsSync("./output/previews")) {
-        // Wipes out the previews directory.
-        fs.rmSync("./output/previews", { recursive: true });
-    } else {
-        // Creates the previews directory.
-        fs.mkdirSync("./output/previews", { recursive: true });
-    }
-
     for (let i = 0; i < families.length; i++) {
         const family = families[i].font_family_settings;
         const updatedFamily = { ...family, fontFace: [] };
         try {
             console.log(`ℹ️  Generating SVG previews for ${family.name} (${i + 1}/${families.length})`);
-            generateFontFamilyPreview(family);
+            await generateFontFamilyPreview(family);
             updatedFamily.preview = getPreviewUrl(family, null, true);
             familiesSuccessCount++;
         } catch (error) {
@@ -107,8 +111,8 @@ function generatePreviews() {
             }
 
         }
-        updatedFontFamilies.push(updatedFamily);
-        console.log("");
+
+        updatedFontFamilies.push( { ...families[i], font_family_settings: updatedFamily } );
     }
 
     if (familiesCount === familiesSuccessCount) {
@@ -127,4 +131,17 @@ function generatePreviews() {
 
 }
 
+// Run on script termination.
+function processExitHandler() {
+    console.log("---------------------------------------------------------------------");
+    console.error( `❎ Script terminated. The previews files generated were not added to ${GOOGLE_FONTS_WITH_PREVIEWS_FILE} file.` );
+    console.log("---------------------------------------------------------------------");
+    process.exit();
+}
+
+// Run on manual process interruption.
+process.on('SIGINT', processExitHandler);
+process.on('SIGTERM', processExitHandler);
+
+// Run the script.
 generatePreviews();
