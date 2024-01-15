@@ -1,6 +1,7 @@
 // Google Fonts API constants
 const API_URL = "https://www.googleapis.com/webfonts/v1/webfonts?capability=WOFF2&capability=VF&key=";
 const API_KEY = process.env.GOOGLE_FONTS_API_KEY;
+const GOOGLE_FONTS_CAPABILITY = "&capability=WOFF2";
 
 // File paths
 const DOWNLOAD_FOLDER = "font-assets";
@@ -26,5 +27,6 @@ module.exports = {
     SVG_PREVIEWS_BASE_URL,
     FONT_COLLECTION_SCHEMA_URL,
     FONT_COLLECTION_SCHEMA_VERSION,
-    CURRENT_RELEASE
+    CURRENT_RELEASE,
+    GOOGLE_FONTS_CAPABILITY
 };

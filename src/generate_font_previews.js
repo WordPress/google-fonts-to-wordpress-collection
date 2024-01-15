@@ -114,7 +114,6 @@ async function generatePreviews() {
     const updatedFontFamilies = [];
 
     for (let i = 0; i < families.length; i++) {
-        
         const family = families[i].font_family_settings;
         const updatedFamily = { ...family, fontFace: [] };
         try {

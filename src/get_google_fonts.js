@@ -10,6 +10,7 @@ const crypto = require('crypto');
 const {
 	API_URL,
 	API_KEY,
+	GOOGLE_FONTS_CAPABILITY,
 	GOOGLE_FONTS_FILE,
 	FONT_COLLECTION_SCHEMA_URL,
 	FONT_COLLECTION_SCHEMA_VERSION,
@@ -102,7 +103,7 @@ async function updateFiles() {
 	let response;
 	
 	try {
-		newApiData = await fetch(`${API_URL}${API_KEY}`);
+		newApiData = await fetch(`${API_URL}${API_KEY}${GOOGLE_FONTS_CAPABILITY}`);
 		response = await newApiData.json();
 	} catch (error) {
 		// TODO: show in UI and remove console statement
@@ -119,7 +120,7 @@ async function updateFiles() {
 		"$schema": FONT_COLLECTION_SCHEMA_URL,
 		"version": FONT_COLLECTION_SCHEMA_VERSION,
 		categories,
-		font_families:fontFamilies, 
+		font_families: fontFamilies, 
 	};
 
 	if (response.items) {
