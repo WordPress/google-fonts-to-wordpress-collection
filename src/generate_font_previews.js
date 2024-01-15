@@ -47,7 +47,10 @@ async function generateFontFacePreview(family, face, isAFamilyPreview) {
     const downloadFolder =releasePath( DOWNLOAD_FOLDER );
     const localFontPath = face.src.replace("https://fonts.gstatic.com/s", downloadFolder);
     
-    await downloadFile( face.src, localFontPath );
+    // Downloads font asset if it doesn't exist and if its not empty.
+    if ( !fs.existsSync( localFontPath ) ) {
+        await downloadFile( face.src, localFontPath );
+    }
 
     // Loads font asset.
     const fontAssetPath = face.src.replace("https://fonts.gstatic.com/s", downloadFolder);
