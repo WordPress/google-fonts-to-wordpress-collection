@@ -10,7 +10,7 @@ const crypto = require('crypto');
 const {
 	API_URL,
 	API_KEY,
-	GOOGLE_FONTS_FILE_PATH,
+	GOOGLE_FONTS_FILE,
 	FONT_COLLECTION_SCHEMA_URL,
 	FONT_COLLECTION_SCHEMA_VERSION,
 } = require('./constants');
@@ -125,18 +125,18 @@ async function updateFiles() {
 		const newDataString = JSON.stringify(newData, null, 2);
 		
 		// If the file doesn't exist, create it
-		if ( ! fs.existsSync( GOOGLE_FONTS_FILE_PATH ) ) {
-			fs.writeFileSync(GOOGLE_FONTS_FILE_PATH, '{}');
+		if ( ! fs.existsSync( GOOGLE_FONTS_FILE ) ) {
+			fs.writeFileSync(GOOGLE_FONTS_FILE, '{}');
 		}
 
-		const oldFileData = fs.readFileSync(GOOGLE_FONTS_FILE_PATH, 'utf8');
+		const oldFileData = fs.readFileSync(GOOGLE_FONTS_FILE, 'utf8');
 		const oldData = JSON.parse(oldFileData);
 		const oldDataString = JSON.stringify(oldData, null, 2);
 
 		if (
 			calculateHash(newDataString) !== calculateHash(oldDataString)
 		) {
-			fs.writeFileSync(GOOGLE_FONTS_FILE_PATH, newDataString);
+			fs.writeFileSync(GOOGLE_FONTS_FILE, newDataString);
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line
 			console.info('✅  Google Fonts JSON file updated');
