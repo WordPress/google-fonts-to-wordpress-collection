@@ -14,6 +14,7 @@ const {
 	FONT_COLLECTION_SCHEMA_URL,
 	FONT_COLLECTION_SCHEMA_VERSION,
 } = require('./constants');
+const { releasePath } = require('./utils');
 
 
 function formatCategoryName(slug) {
@@ -125,18 +126,18 @@ async function updateFiles() {
 		const newDataString = JSON.stringify(newData, null, 2);
 		
 		// If the file doesn't exist, create it
-		if ( ! fs.existsSync( GOOGLE_FONTS_FILE ) ) {
-			fs.writeFileSync(GOOGLE_FONTS_FILE, '{}');
+		if ( ! fs.existsSync( releasePath( GOOGLE_FONTS_FILE ) ) ) {
+			fs.writeFileSync(releasePath( GOOGLE_FONTS_FILE ), '{}');
 		}
 
-		const oldFileData = fs.readFileSync(GOOGLE_FONTS_FILE, 'utf8');
+		const oldFileData = fs.readFileSync( releasePath( GOOGLE_FONTS_FILE ) , 'utf8');
 		const oldData = JSON.parse(oldFileData);
 		const oldDataString = JSON.stringify(oldData, null, 2);
 
 		if (
 			calculateHash(newDataString) !== calculateHash(oldDataString)
 		) {
-			fs.writeFileSync(GOOGLE_FONTS_FILE, newDataString);
+			fs.writeFileSync( releasePath( GOOGLE_FONTS_FILE ), newDataString);
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line
 			console.info('✅  Google Fonts JSON file updated');

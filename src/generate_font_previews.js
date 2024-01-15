@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require("path");
 const TextToSVG = require('text-to-svg');
+const woff2 = require('woff2');
 
 /**
  * Internal dependencies
@@ -39,6 +40,29 @@ function getPreviewFilename(family, face, isAFamilyPreview) {
     return `${name}.svg`;
 }
 
+/*
+  * Loads the font asset and returns a TextToSVG instance.
+  * If the font asset is a WOFF2 file, it will be decoded to a TTF file.
+
+  * @param {string} fontAssetPath - The path to the font asset.
+  * @return {TextToSVG} - The TextToSVG instance.
+*/
+function loadFontToTextToSVG( fontAssetPath ) {
+    if ( fontAssetPath.endsWith('.woff2') ) {
+        // Decodes WOFF2 font asset.
+        const fileData = fs.readFileSync(fontAssetPath);
+        // Writes a temporary ttf file.
+        const ttfFontAssetPath = fontAssetPath.replace('.woff2', '.ttf');
+        fs.writeFileSync( ttfFontAssetPath, woff2.decode( fileData ) );
+        const textToSVG = TextToSVG.loadSync(ttfFontAssetPath);
+        // Deletes the temporary ttf file.
+        fs.unlinkSync( ttfFontAssetPath );
+        return textToSVG;
+    }
+    const textToSVG = TextToSVG.loadSync(fontAssetPath);
+    return textToSVG;
+}
+
 async function generateFontFacePreview(family, face, isAFamilyPreview) {
     const text = isAFamilyPreview
         ? family.name
@@ -54,7 +78,9 @@ async function generateFontFacePreview(family, face, isAFamilyPreview) {
 
     // Loads font asset.
     const fontAssetPath = face.src.replace("https://fonts.gstatic.com/s", downloadFolder);
-    const textToSVG = TextToSVG.loadSync(fontAssetPath);
+
+    // Loads font asset to TextToSVG instance.
+    const textToSVG = loadFontToTextToSVG( fontAssetPath );
 
     // Generates SVG.
     const attributes = { fill: 'black' };
