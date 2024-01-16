@@ -17,7 +17,7 @@ const FONT_COLLECTION_SCHEMA_URL =
 const FONT_COLLECTION_SCHEMA_VERSION = 1;
 
 // Current Release
-CURRENT_RELEASE = 'gutenberg-17.6';
+const CURRENT_RELEASE = 'gutenberg-17.6';
 
 module.exports = {
 	API_URL,
