@@ -1,24 +1,30 @@
 {
-  "name": "google-fonts-to-wordpress-collection",
-  "version": "0.0.1",
-  "description": "Creates a WordPress Font Library collection from Google Fonts API and generated SVG previews",
-  "scripts": {
-    "api": "node src/get_google_fonts.js",
-    "files": "node src/download_google_font_assets.js",
-    "previews": "node src/generate_font_previews.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection.git"
-  },
-  "author": "",
-  "license": "GPL-2.0-or-later",
-  "bugs": {
-    "url": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection/issues"
-  },
-  "homepage": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection#readme",
-  "dependencies": {
-    "text-to-svg": "^3.1.5",
-    "woff2": "^1.0.0"
-  }
+	"name": "google-fonts-to-wordpress-collection",
+	"version": "0.0.1",
+	"description": "Creates a WordPress Font Library collection from Google Fonts API and generated SVG previews",
+	"scripts": {
+		"api": "node src/get_google_fonts.js",
+		"files": "node src/download_google_font_assets.js",
+		"previews": "node src/generate_font_previews.js",
+		"format": "wp-scripts format",
+		"lint:js": "wp-scripts lint-js",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"packages-update": "wp-scripts packages-update"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection.git"
+	},
+	"author": "",
+	"license": "GPL-2.0-or-later",
+	"bugs": {
+		"url": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection/issues"
+	},
+	"homepage": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection#readme",
+	"dependencies": {
+		"@wordpress/scripts": "^26.19.0",
+		"text-to-svg": "^3.1.5",
+		"woff2": "^1.0.0"
+	}
 }
