@@ -1,6 +1,5 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/font-collection.json",
-	"version": 1,
 	"categories": [
 		{
 			"name": "Sans Serif",
