@@ -14,7 +14,6 @@ const SVG_PREVIEWS_BASE_URL = 'https://s.w.org/images/fonts/16.7/previews/';
 // font-collection.json schema realted constants
 const FONT_COLLECTION_SCHEMA_URL =
 	'https://schemas.wp.org/trunk/font-collection.json';
-const FONT_COLLECTION_SCHEMA_VERSION = 1;
 
 // Current Release
 const CURRENT_RELEASE = 'gutenberg-17.6';
@@ -28,7 +27,6 @@ module.exports = {
 	GOOGLE_FONTS_WITH_PREVIEWS_FILE,
 	SVG_PREVIEWS_BASE_URL,
 	FONT_COLLECTION_SCHEMA_URL,
-	FONT_COLLECTION_SCHEMA_VERSION,
 	CURRENT_RELEASE,
 	GOOGLE_FONTS_CAPABILITY,
 };
