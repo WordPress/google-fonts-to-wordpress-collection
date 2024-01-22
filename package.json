@@ -3,10 +3,11 @@
 	"version": "0.0.1",
 	"description": "Creates a WordPress Font Library collection from Google Fonts API and generated SVG previews",
 	"scripts": {
-		"api": "node src/get_google_fonts.js",
+		"api": "node src/get_google_fonts.js && npm run format:json",
 		"files": "node src/download_google_font_assets.js",
-		"previews": "node src/generate_font_previews.js",
+		"previews": "node src/generate_font_previews.js && npm run format:json",
 		"format": "wp-scripts format",
+		"format:json": "wp-scripts format releases/**/*.json",
 		"lint:js": "wp-scripts lint-js",
 		"lint:md:docs": "wp-scripts lint-md-docs",
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
