@@ -9,7 +9,7 @@ const DOWNLOAD_FOLDER = 'font-assets';
 const PREVIEWS_FOLDER = 'previews';
 const GOOGLE_FONTS_FILE = 'google-fonts.json';
 const GOOGLE_FONTS_WITH_PREVIEWS_FILE = 'google-fonts-with-preview.json';
-const SVG_PREVIEWS_BASE_URL = 'https://s.w.org/images/fonts/16.7/previews/';
+const SVG_PREVIEWS_BASE_URL = 'https://s.w.org/images/fonts/17.6/previews/';
 
 // font-collection.json schema realted constants
 const FONT_COLLECTION_SCHEMA_URL =
