@@ -13,7 +13,6 @@ const {
 	GOOGLE_FONTS_CAPABILITY,
 	GOOGLE_FONTS_FILE,
 	FONT_COLLECTION_SCHEMA_URL,
-	FONT_COLLECTION_SCHEMA_VERSION,
 } = require( './constants' );
 const { releasePath } = require( './utils' );
 
@@ -119,7 +118,6 @@ async function updateFiles() {
 	// The data to be written to the file
 	newData = {
 		$schema: FONT_COLLECTION_SCHEMA_URL,
-		version: FONT_COLLECTION_SCHEMA_VERSION,
 		categories,
 		font_families: fontFamilies,
 	};
