@@ -15,12 +15,13 @@ const {
 	SVG_PREVIEWS_BASE_URL,
 	DOWNLOAD_FOLDER,
 	PREVIEWS_FOLDER,
+	COLLECTIONS_FOLDER,
 } = require( './constants' );
 const { releasePath, downloadFile } = require( './utils' );
 
 function getFamilies() {
 	const googleFontsFile = fs.readFileSync(
-		releasePath( GOOGLE_FONTS_FILE ),
+		releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
 		'utf8'
 	);
 	const googleFonts = JSON.parse( googleFontsFile );
@@ -29,13 +30,13 @@ function getFamilies() {
 
 function updateGoogleFontsFileWithPreviews( newFontFamilies ) {
 	const googleFontsFile = fs.readFileSync(
-		releasePath( GOOGLE_FONTS_FILE ),
+		releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
 		'utf8'
 	);
 	const content = JSON.parse( googleFontsFile );
 	content.font_families = newFontFamilies;
 	fs.writeFileSync(
-		releasePath( GOOGLE_FONTS_WITH_PREVIEWS_FILE ),
+		releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_WITH_PREVIEWS_FILE }` ),
 		JSON.stringify( content, null, 2 )
 	);
 }

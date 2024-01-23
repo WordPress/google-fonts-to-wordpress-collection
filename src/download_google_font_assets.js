@@ -7,12 +7,12 @@ const path = require( 'path' );
 /**
  * Internal dependencies
  */
-const { GOOGLE_FONTS_FILE } = require( './constants' );
+const { GOOGLE_FONTS_FILE, COLLECTIONS_FOLDER } = require( './constants' );
 const { releasePath, downloadFile } = require( './utils' );
 
 function getFamilies() {
 	const googleFontsFile = fs.readFileSync(
-		releasePath( GOOGLE_FONTS_FILE ),
+		releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
 		'utf8'
 	);
 	const googleFonts = JSON.parse( googleFontsFile );

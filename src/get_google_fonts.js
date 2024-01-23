@@ -12,6 +12,7 @@ const {
 	API_KEY,
 	GOOGLE_FONTS_CAPABILITY,
 	GOOGLE_FONTS_FILE,
+	COLLECTIONS_FOLDER,
 	FONT_COLLECTION_SCHEMA_URL,
 } = require( './constants' );
 const { releasePath } = require( './utils' );
@@ -126,12 +127,12 @@ async function updateFiles() {
 		const newDataString = JSON.stringify( newData, null, 2 );
 
 		// If the file doesn't exist, create it
-		if ( ! fs.existsSync( releasePath( GOOGLE_FONTS_FILE ) ) ) {
-			fs.writeFileSync( releasePath( GOOGLE_FONTS_FILE ), '{}' );
+		if ( ! fs.existsSync( releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ) ) ) {
+			fs.writeFileSync( releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ), '{}' );
 		}
 
 		const oldFileData = fs.readFileSync(
-			releasePath( GOOGLE_FONTS_FILE ),
+			releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
 			'utf8'
 		);
 		const oldData = JSON.parse( oldFileData );
@@ -140,7 +141,7 @@ async function updateFiles() {
 		if (
 			calculateHash( newDataString ) !== calculateHash( oldDataString )
 		) {
-			fs.writeFileSync( releasePath( GOOGLE_FONTS_FILE ), newDataString );
+			fs.writeFileSync( releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ), newDataString );
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line
 			console.info( '✅  Google Fonts JSON file updated' );

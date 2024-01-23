@@ -7,6 +7,7 @@ const GOOGLE_FONTS_CAPABILITY = '&capability=WOFF2';
 // File paths
 const DOWNLOAD_FOLDER = 'font-assets';
 const PREVIEWS_FOLDER = 'previews';
+const COLLECTIONS_FOLDER = 'collections';
 const GOOGLE_FONTS_FILE = 'google-fonts.json';
 const GOOGLE_FONTS_WITH_PREVIEWS_FILE = 'google-fonts-with-preview.json';
 const SVG_PREVIEWS_BASE_URL = 'https://s.w.org/images/fonts/17.6/previews/';
@@ -23,6 +24,7 @@ module.exports = {
 	API_KEY,
 	DOWNLOAD_FOLDER,
 	PREVIEWS_FOLDER,
+	COLLECTIONS_FOLDER,
 	GOOGLE_FONTS_FILE,
 	GOOGLE_FONTS_WITH_PREVIEWS_FILE,
 	SVG_PREVIEWS_BASE_URL,
