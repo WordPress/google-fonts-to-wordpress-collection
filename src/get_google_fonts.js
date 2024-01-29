@@ -85,14 +85,16 @@ function getFontFamilyFromGoogleFont( font ) {
 				font.category
 			) }`,
 			slug: font.family.replace( /\s+/g, '-' ).toLowerCase(),
-			fontFace: font.variants.map( ( variant ) => ( {
+		},
+		categories: [ font.category ],
+		font_faces: font.variants.map( ( variant ) => ( {
+			font_face_settings: {
 				src: httpToHttps( font.files?.[ variant ] ),
 				fontWeight: getWeightFromGoogleVariant( variant ),
 				fontStyle: getStyleFromGoogleVariant( variant ),
 				fontFamily: font.family,
-			} ) ),
-		},
-		categories: [ font.category ],
+			}
+		} ) ),
 	};
 }
 
