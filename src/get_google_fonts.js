@@ -119,6 +119,9 @@ async function updateFiles() {
 	// The data to be written to the file
 	newData = {
 		$schema: FONT_COLLECTION_SCHEMA_URL,
+		slug: 'google-fonts',
+		name: 'Google Fonts',
+		description: 'Install from Google Fonts. Fonts are copied to and served from your site.',
 		categories,
 		font_families: fontFamilies,
 	};
