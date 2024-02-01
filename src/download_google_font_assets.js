@@ -33,13 +33,13 @@ async function downloadFontFamilies() {
 		);
 		for (
 			let x = 0;
-			x < families[ i ].font_faces.length;
+			x < families[ i ].font_family_settings.fontFace.length;
 			x++
 		) {
 			facesCount++;
 
 			const url =
-				families[ i ].font_faces[ x ].font_face_settings[ 'src' ];
+				families[ i ].font_family_settings.fontFace[ x ][ 'src' ];
 			const relativePath = url.replace(
 				'https://fonts.gstatic.com/s/',
 				''
