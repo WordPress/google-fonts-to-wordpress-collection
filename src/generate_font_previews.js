@@ -127,13 +127,13 @@ async function generateFontFacePreview( family, face, isAFamilyPreview ) {
 	console.log( `✅ Generated ${ svgPath }` );
 }
 
-async function generateFontFamilyPreview( fontFamily, fontFamilySettings ) {
+async function generateFontFamilyPreview( family ) {
 	// Select the font face to make the preview (try to get 400, normal if it's there)
 	const face =
-	fontFamily.font_faces.find(
-			( face ) => face.font_face_settings.fontWeight === '400' && face.font_face_settings.fontStyle === 'normal'
-		) || fontFamily.font_faces[ 0 ];
-	await generateFontFacePreview( fontFamilySettings, face.font_face_settings, true );
+		family.fontFace.find(
+			( face ) => face.fontWeight === '400' && face.fontStyle === 'normal'
+		) || family.fontFace[ 0 ];
+	await generateFontFacePreview( family, face, family.name, true );
 }
 
 async function generatePreviews() {
@@ -145,50 +145,46 @@ async function generatePreviews() {
 	const updatedFontFamilies = [];
 
 	for ( let i = 0; i < families.length; i++ ) {
-		const fontFamily = families[ i ];
-		const fontFamilySettings = families[ i ].font_family_settings;
-		const fontFaces = families[ i ].font_faces;
-		const updatedFamily = { ...fontFamily, font_faces: [] };
-
+		const family = families[ i ].font_family_settings;
+		const updatedFamily = { ...family, fontFace: [] };
 		try {
 			// eslint-disable-next-line no-console
 			console.log(
-				`ℹ️  Generating SVG previews for ${ fontFamilySettings.name } (${ i + 1 }/${
+				`ℹ️  Generating SVG previews for ${ family.name } (${ i + 1 }/${
 					families.length
 				})`
 			);
-			await generateFontFamilyPreview( fontFamily, fontFamilySettings );
-			updatedFamily.preview = getPreviewUrl( fontFamilySettings, null, true );
+			await generateFontFamilyPreview( family );
+			updatedFamily.preview = getPreviewUrl( family, null, true );
 			familiesSuccessCount++;
 		} catch ( error ) {
 			// eslint-disable-next-line no-console
 			console.error(
-				`❎  Error generating preview for ${ fontFamilySettings.name }: ${ error }`
+				`❎  Error generating preview for ${ family.name }: ${ error }`
 			);
 		}
 
-		for ( let x = 0; x < fontFaces.length; x++ ) {
+		for ( let x = 0; x < family.fontFace.length; x++ ) {
 			facesCount++;
-			const face = fontFaces[ x ].font_face_settings;
+			const face = family.fontFace[ x ];
 			try {
-				generateFontFacePreview( fontFamilySettings, face );
-				updatedFamily.font_faces.push( {
-					font_face_settings: face,
-					preview: getPreviewUrl( fontFamilySettings, face, false ),
+				generateFontFacePreview( family, face );
+				updatedFamily.fontFace.push( {
+					...face,
+					preview: getPreviewUrl( family, face, false ),
 				} );
 				facesSuccessCount++;
 			} catch ( error ) {
 				// eslint-disable-next-line no-console
 				console.error(
-					`❎  Error generating preview for ${ fontFamilySettings.name } ${ face.fontWeight } ${ face.fontStyle }: ${ error }`
+					`❎  Error generating preview for ${ family.name } ${ face.fontWeight } ${ face.fontStyle }: ${ error }`
 				);
 			}
 		}
 
 		updatedFontFamilies.push( {
 			...families[ i ],
-			preview: updatedFamily.preview,
-			font_faces: updatedFamily.font_faces,
+			font_family_settings: updatedFamily,
 		} );
 	}
 
