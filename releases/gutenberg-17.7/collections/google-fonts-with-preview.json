@@ -1,6 +1,5 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/font-collection.json",
-	"slug": "google-fonts",
 	"name": "Google Fonts",
 	"description": "Install from Google Fonts. Fonts are copied to and served from your site.",
 	"categories": [
