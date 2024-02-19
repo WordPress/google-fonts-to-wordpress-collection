@@ -119,10 +119,6 @@ async function updateFiles() {
 	// The data to be written to the file
 	newData = {
 		$schema: FONT_COLLECTION_SCHEMA_URL,
-		slug: 'google-fonts',
-		name: 'Google Fonts',
-		description: 'Install from Google Fonts. Fonts are copied to and served from your site.',
-		categories,
 		font_families: fontFamilies,
 	};
 
@@ -148,6 +144,7 @@ async function updateFiles() {
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line
 			console.info( '✅  Google Fonts JSON file updated' );
+			console.info ( 'These are the categories collected: ', categories );
 		} else {
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line
