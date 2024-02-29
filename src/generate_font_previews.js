@@ -7,6 +7,37 @@ const TextToSVG = require( 'text-to-svg' );
 const woff2 = require( 'woff2' );
 
 /**
+ * This is a collection of fonts that render poorly.  Exclude them from the preview generation.
+ */
+const excludedFontFamilies = [
+	'chenla',
+	'coiny',
+	'concert-one',
+	'content',
+	'cutive',
+	'englebert',
+	'khmer',
+	'liu-jian-mao-cao',
+	'material-icons',
+	'material-icons-outlined',
+	'material-icons-round',
+	'material-icons-sharp',
+	'material-icons-two-tone',
+	'noto-color-emoji',
+	'noto-emoji',
+	'noto-emoji',
+	'noto-kufi-arabic',
+	'noto-sans-arabic',
+	'noto-sans-lycian',
+	'noto-sans-myanmar',
+	'noto-sans-phags-pa',
+	'noto-sans-signwriting',
+	'noto-serif-myanmar',
+	'revalia',
+	'siemreap',
+	'updock',
+];
+/**
  * Internal dependencies
  */
 const {
@@ -147,6 +178,21 @@ async function generatePreviews() {
 	for ( let i = 0; i < families.length; i++ ) {
 		const family = families[ i ].font_family_settings;
 		const updatedFamily = { ...family, fontFace: [] };
+
+		if ( excludedFontFamilies.includes( family.slug ) ) {
+			// eslint-disable-next-line no-console
+			console.log(
+				`ℹ️  Skipping SVG previews for ${ family.name } (${ i + 1 }/${
+					families.length
+				})`
+			);
+			updatedFontFamilies.push( {
+				...families[ i ],
+				font_family_settings: family,
+			} );
+			continue;
+		}
+
 		try {
 			// eslint-disable-next-line no-console
 			console.log(
@@ -236,5 +282,21 @@ function processExitHandler() {
 process.on( 'SIGINT', processExitHandler );
 process.on( 'SIGTERM', processExitHandler );
 
-// Run the script.
-generatePreviews();
+
+if ( process.argv[2] ) {
+	// Generate a single preview for the supplied font
+	const fontFamilyName = process.argv[2];
+	const fontFamilies = getFamilies();
+	const fontFamily = fontFamilies.find( ( family ) => family.font_family_settings.name === fontFamilyName );
+	if ( ! fontFamily ) {
+		// eslint-disable-next-line no-console
+		console.error( `❎ Font family ${ fontFamilyName } not found.` );
+		process.exit(1);
+	}
+	generateFontFamilyPreview( fontFamily.font_family_settings );
+}
+
+else {
+	// Run the script.
+	generatePreviews();
+}
