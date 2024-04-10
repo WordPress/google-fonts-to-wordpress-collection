@@ -15,14 +15,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/wordpress/google-fonts-to-wordpress-collection.git"
+		"url": "git+https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection.git"
 	},
 	"author": "",
 	"license": "GPL-2.0-or-later",
 	"bugs": {
-		"url": "https://github.com/wordpress/google-fonts-to-wordpress-collection/issues"
+		"url": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection/issues"
 	},
-	"homepage": "https://github.com/wordpress/google-fonts-to-wordpress-collection#readme",
+	"homepage": "https://github.com/matiasbenedetto/google-fonts-to-wordpress-collection#readme",
 	"dependencies": {
 		"@wordpress/scripts": "^26.19.0",
 		"text-to-svg": "^3.1.5",
