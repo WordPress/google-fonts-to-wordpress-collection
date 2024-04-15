@@ -12,15 +12,21 @@ const app = express();
 app.use( morgan( 'combined' ) );
 
 app.get( '/images/fonts/*', async ( req, res ) => {
+	// Serve font collections from the local filesystem at the same url paths as s.w.org for both WP and Gutenberg releases:
+	// e.g. /images/fonts/wp-6.5/... and /images/fonts/17.7/...
+	const subdir = req.url.includes( '/wp-' ) ? '' : 'gutenberg-';
 	const filePath = path.join(
 		__dirname,
 		'releases',
-		'gutenberg-' + req.params[ 0 ]
+		subdir + req.params[ 0 ]
 	);
+
+	// Rewrite font preview URLs in the collection JSON to use the development server
 	if ( path.extname( filePath ) === '.json' ) {
 		const readStream = fs.createReadStream( filePath, {
 			encoding: 'utf8',
 		} );
+
 		const transformStream = new stream.Transform( {
 			transform( chunk, encoding, callback ) {
 				this.push(
