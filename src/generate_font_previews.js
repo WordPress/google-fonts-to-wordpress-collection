@@ -67,21 +67,22 @@ function updateGoogleFontsFileWithPreviews( newFontFamilies ) {
 	const content = JSON.parse( googleFontsFile );
 	content.font_families = newFontFamilies;
 	fs.writeFileSync(
-		releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_WITH_PREVIEWS_FILE }` ),
+		releasePath(
+			`${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_WITH_PREVIEWS_FILE }`
+		),
 		JSON.stringify( content, null, 2 )
 	);
 }
 
 function getPreviewUrl( family, face, isAFamilyPreview ) {
-	const fileName = getPreviewFilename( family, face, isAFamilyPreview );
-	return `${ SVG_PREVIEWS_BASE_URL }${ family.slug }/${ fileName }`;
+	const fileName = getFontFilename( family, face, isAFamilyPreview );
+	return `${ SVG_PREVIEWS_BASE_URL }${ family.slug }/${ fileName }.svg`;
 }
 
-function getPreviewFilename( family, face, isAFamilyPreview ) {
-	const name = isAFamilyPreview
+function getFontFilename( family, face, isAFamilyPreview ) {
+	return isAFamilyPreview
 		? `${ family.slug }`
 		: `${ family.slug }-${ face.fontWeight }-${ face.fontStyle }`;
-	return `${ name }.svg`;
 }
 
 /*
@@ -112,25 +113,23 @@ async function generateFontFacePreview( family, face, isAFamilyPreview ) {
 		? family.name
 		: `${ family.name } ${ face.fontWeight } ${ face.fontStyle }`;
 
+	const fileName = getFontFilename( family, face, isAFamilyPreview );
 	const downloadFolder = releasePath( DOWNLOAD_FOLDER );
-	const localFontPath = face.src.replace(
-		'https://fonts.gstatic.com/s',
-		downloadFolder
+	const localFontPath = releasePath(
+		`${ DOWNLOAD_FOLDER }/${ family.slug }/${ fileName }.woff2`
 	);
 
 	// Downloads font asset if it doesn't exist and if its not empty.
 	if ( ! fs.existsSync( localFontPath ) ) {
-		await downloadFile( face.src, localFontPath );
+		try {
+			await downloadFile( face.src, localFontPath );
+		} catch ( error ) {
+			throw new Error( `Error downloading font asset: ${ error }` );
+		}
 	}
 
-	// Loads font asset.
-	const fontAssetPath = face.src.replace(
-		'https://fonts.gstatic.com/s',
-		downloadFolder
-	);
-
 	// Loads font asset to TextToSVG instance.
-	const textToSVG = loadFontToTextToSVG( fontAssetPath );
+	const textToSVG = loadFontToTextToSVG( localFontPath );
 
 	// Generates SVG.
 	const attributes = { fill: 'black' };
@@ -144,16 +143,15 @@ async function generateFontFacePreview( family, face, isAFamilyPreview ) {
 	const svgMarkup = textToSVG.getSVG( text, options );
 
 	// Saves SVG file.
-	const fileName = getPreviewFilename( family, face, isAFamilyPreview );
 	const svgPath = releasePath(
-		`${ PREVIEWS_FOLDER }/${ family.slug }/${ fileName }`
+		`${ PREVIEWS_FOLDER }/${ family.slug }/${ fileName }.svg`
 	);
 	const directoryPath = path.dirname( svgPath );
 
 	// Writes the SVG file.
 	fs.mkdirSync( directoryPath, { recursive: true } );
 	fs.writeFileSync( svgPath, svgMarkup );
-	
+
 	// eslint-disable-next-line no-console
 	console.log( `✅ Generated ${ svgPath }` );
 }
@@ -282,21 +280,20 @@ function processExitHandler() {
 process.on( 'SIGINT', processExitHandler );
 process.on( 'SIGTERM', processExitHandler );
 
-
-if ( process.argv[2] ) {
+if ( process.argv[ 2 ] ) {
 	// Generate a single preview for the supplied font
-	const fontFamilyName = process.argv[2];
+	const fontFamilyName = process.argv[ 2 ];
 	const fontFamilies = getFamilies();
-	const fontFamily = fontFamilies.find( ( family ) => family.font_family_settings.name === fontFamilyName );
+	const fontFamily = fontFamilies.find(
+		( family ) => family.font_family_settings.name === fontFamilyName
+	);
 	if ( ! fontFamily ) {
 		// eslint-disable-next-line no-console
 		console.error( `❎ Font family ${ fontFamilyName } not found.` );
-		process.exit(1);
+		process.exit( 1 );
 	}
 	generateFontFamilyPreview( fontFamily.font_family_settings );
-}
-
-else {
+} else {
 	// Run the script.
 	generatePreviews();
 }
