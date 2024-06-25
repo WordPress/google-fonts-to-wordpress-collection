@@ -38,7 +38,7 @@ async function downloadFile( url, destPath ) {
 			} )
 			.on( 'error', function ( err ) {
 				// Handle errors
-				fs.unlink( tempPath ); // Delete the file async. (But we don't check the result)
+				fs.unlink( tempPath, () => {} ); // Delete the file async. (But we don't check the result)
 				reject( err.message );
 			} );
 	} );
