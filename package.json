@@ -11,7 +11,8 @@
 		"lint:js": "wp-scripts lint-js",
 		"lint:md:docs": "wp-scripts lint-md-docs",
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
-		"packages-update": "wp-scripts packages-update"
+		"packages-update": "wp-scripts packages-update",
+		"serve": "node development-server.js"
 	},
 	"repository": {
 		"type": "git",
@@ -25,6 +26,9 @@
 	"homepage": "https://github.com/wordpress/google-fonts-to-wordpress-collection#readme",
 	"dependencies": {
 		"@wordpress/scripts": "^26.19.0",
+		"express": "^4.19.2",
+		"http": "^0.0.1-security",
+		"morgan": "^1.10.0",
 		"text-to-svg": "^3.1.5",
 		"woff2": "^1.0.0"
 	}
