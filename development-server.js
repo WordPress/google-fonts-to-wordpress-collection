@@ -46,7 +46,16 @@ app.get( '/images/fonts/*', async ( req, res ) => {
 		} );
 
 		res.setHeader( 'Content-Type', 'application/json' );
-		await pipeline( readStream, transformStream, res );
+		try {
+			await pipeline( readStream, transformStream, res );
+		} catch ( err ) {
+			console.error( err );
+			if ( ! res.headersSent ) {
+				res.status( 500 ).send(
+					'An error occurred while processing the file'
+				);
+			}
+		}
 	} else {
 		res.sendFile( filePath, ( err ) => {
 			if ( err ) {
