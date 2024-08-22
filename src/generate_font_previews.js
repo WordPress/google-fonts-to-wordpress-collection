@@ -67,7 +67,9 @@ function updateGoogleFontsFileWithPreviews( newFontFamilies ) {
 	const content = JSON.parse( googleFontsFile );
 	content.font_families = newFontFamilies;
 	fs.writeFileSync(
-		releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_WITH_PREVIEWS_FILE }` ),
+		releasePath(
+			`${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_WITH_PREVIEWS_FILE }`
+		),
 		JSON.stringify( content, null, 2 )
 	);
 }
@@ -139,7 +141,7 @@ async function generateFontFacePreview( family, face, isAFamilyPreview ) {
 		y: 0,
 		fontSize: 24,
 		anchor: 'top',
-		attributes: attributes,
+		attributes,
 	};
 	const svgMarkup = textToSVG.getSVG( text, options );
 
@@ -153,7 +155,7 @@ async function generateFontFacePreview( family, face, isAFamilyPreview ) {
 	// Writes the SVG file.
 	fs.mkdirSync( directoryPath, { recursive: true } );
 	fs.writeFileSync( svgPath, svgMarkup );
-	
+
 	// eslint-disable-next-line no-console
 	console.log( `✅ Generated ${ svgPath }` );
 }
@@ -162,7 +164,8 @@ async function generateFontFamilyPreview( family ) {
 	// Select the font face to make the preview (try to get 400, normal if it's there)
 	const face =
 		family.fontFace.find(
-			( face ) => face.fontWeight === '400' && face.fontStyle === 'normal'
+			( _face ) =>
+				_face.fontWeight === '400' && _face.fontStyle === 'normal'
 		) || family.fontFace[ 0 ];
 	await generateFontFacePreview( family, face, family.name, true );
 }
@@ -282,21 +285,20 @@ function processExitHandler() {
 process.on( 'SIGINT', processExitHandler );
 process.on( 'SIGTERM', processExitHandler );
 
-
-if ( process.argv[2] ) {
+if ( process.argv[ 2 ] ) {
 	// Generate a single preview for the supplied font
-	const fontFamilyName = process.argv[2];
+	const fontFamilyName = process.argv[ 2 ];
 	const fontFamilies = getFamilies();
-	const fontFamily = fontFamilies.find( ( family ) => family.font_family_settings.name === fontFamilyName );
+	const fontFamily = fontFamilies.find(
+		( family ) => family.font_family_settings.name === fontFamilyName
+	);
 	if ( ! fontFamily ) {
 		// eslint-disable-next-line no-console
 		console.error( `❎ Font family ${ fontFamilyName } not found.` );
-		process.exit(1);
+		process.exit( 1 );
 	}
 	generateFontFamilyPreview( fontFamily.font_family_settings );
-}
-
-else {
+} else {
 	// Run the script.
 	generatePreviews();
 }

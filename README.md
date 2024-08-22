@@ -4,8 +4,8 @@ This repo contains node.js scripts to generate the Google Fonts collection JSON 
 
 Here are examples of the JSON files these scripts generate:
 
-- https://s.w.org/images/fonts/17.7/collections/google-fonts.json
-- https://s.w.org/images/fonts/17.7/collections/google-fonts-with-preview.json
+- <https://s.w.org/images/fonts/17.7/collections/google-fonts.json>
+- <https://s.w.org/images/fonts/17.7/collections/google-fonts-with-preview.json>
 
 ## How?
 
@@ -21,12 +21,13 @@ The code in this repo:
 
 Install the NPM dependencies:
 
-```
+```bash
 npm install
 ```
+
 ---
 
-```
+```bash
 GOOGLE_FONTS_API_KEY=abc123 npm run api
 ```
 
@@ -35,7 +36,7 @@ GOOGLE_FONTS_API_KEY=abc123 npm run api
 
 ---
 
-```
+```bash
 npm run previews
 ```
 
@@ -50,22 +51,22 @@ To serve the fonts from a development server for testing on a local WordPress si
 
 Start the development server from this repo
 
-```
+```bash
 npm run serve
 ```
 
 Add the following filters to an mu-plugin running on your local WordPress site (e.g. `wp-content/mu-plugins/0-local.php`). Update the version variables, if needed:
 
-- `$wp_release_fonts_version` version in the collection url your local site is running
-  - Check `wp_register_font_collection` in `wp-includes/fonts.php`
-  - e.g. A `font_families` url of `https://s.w.org/images/fonts/wp-6.5/collections/google-fonts-with-preview.json` means a `$wp_release_fonts_version` of `6.5`
-- `$gutenberg_release_fonts_version` version of the collection url from Gutenberg (if Gutenberg is loading a newer version of the collection)
-  - Check for `wp_register_font_collection( 'google-fonts', ...` [in the Gutenberg repo](https://github.com/search?q=repo:WordPress/gutenberg+wp_register_font_collection(+'google-fonts'&type=code
+-   `$wp_release_fonts_version` version in the collection url your local site is running
+    - Check `wp_register_font_collection` in `wp-includes/fonts.php`
+    - e.g. A `font_families` url of `https://s.w.org/images/fonts/wp-6.5/collections/google-fonts-with-preview.json` means a `$wp_release_fonts_version` of `6.5`
+-   `$gutenberg_release_fonts_version` version of the collection url from Gutenberg (if Gutenberg is loading a newer version of the collection)
+    - Check for `wp_register_font_collection( 'google-fonts', ...)` [in the Gutenberg repo](https://github.com/search?q=repo:WordPress/gutenberg+wp_register_font_collection(+'google-fonts'&type=code)
 )
-  - e.g. A `font_families` url of `https://s.w.org/images/fonts/17.7/collections/google-fonts-with-preview.json` means a `$gutenberg_release_fonts_version` of `17.7`
-- `$generated_fonts_version` version of fonts generated in this repo you would like to serve
-  - e.g if the fonts are in a folder `releases/gutenberg-18.2`, the `$generated_fonts_version` should be `18.2`
-  - For fonts in `releases/wp-6.6`, `$generated_fonts_version` should be `6.6`
+    - e.g. A `font_families` url of `https://s.w.org/images/fonts/17.7/collections/google-fonts-with-preview.json` means a `$gutenberg_release_fonts_version` of `17.7`
+-   `$generated_fonts_version` version of fonts generated in this repo you would like to serve
+    - e.g if the fonts are in a folder `releases/gutenberg-18.2`, the `$generated_fonts_version` should be `18.2`
+    - For fonts in `releases/wp-6.6`, `$generated_fonts_version` should be `6.6`
 
 ```php
 // Rewrite Google Fonts URLs to localhost.
@@ -105,16 +106,15 @@ add_filter( 'http_allowed_safe_ports', 'my_allow_http_ports' );
 
 The local WordPress site should now load fonts from this repo. You can check by loading the Font Library in the site editor and looking at the log output from `npm run serve`.
 
-## Extra utilities:
+## Extra utilities
 
-Download all the font files
----
+### Download all the font files
 
-```
+Downloads each one of the font assets for the 1500+ families available.
+
+```bash
 npm run files
 ```
-
-- Downloads each one of the font assets for the 1500+ families available.
 
 ## Requirements
 
@@ -130,4 +130,4 @@ Update the `CURRENT_RELEASE` and `SVG_PREVIEWS_BASE_URL` constants in `src/const
 
 Generate a new version of the collection using the commands above, generate new previews if needed, and open a PR with the change.
 
-Once the PR is merged to trunk, the collection can be uploaded to the s.wp.org CDN by submitting a meta ticket, for example: https://meta.trac.wordpress.org/ticket/7522
+Once the PR is merged to trunk, the collection can be uploaded to the s.wp.org CDN by submitting a meta ticket, for example: <https://meta.trac.wordpress.org/ticket/7522>
