@@ -27,7 +27,7 @@ async function downloadFile( url, destPath ) {
 
 	return new Promise( ( resolve, reject ) => {
 		const file = fs.createWriteStream( tempPath );
-		const request = https
+		https
 			.get( url, function ( response ) {
 				response.pipe( file );
 				// move temp file to destPath

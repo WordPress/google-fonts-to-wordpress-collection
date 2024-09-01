@@ -30,12 +30,12 @@ function formatCategoryName( slug ) {
 }
 
 function getCategories( fonts ) {
-	const category_slugs = new Set();
+	const categorySlugs = new Set();
 	fonts.forEach( ( font ) => {
-		category_slugs.add( font.category );
+		categorySlugs.add( font.category );
 	} );
 	// Returs an array of categories
-	const categories = [ ...category_slugs ].map( ( slug ) => ( {
+	const categories = [ ...categorySlugs ].map( ( slug ) => ( {
 		name: formatCategoryName( slug ),
 		slug,
 	} ) );
@@ -98,7 +98,6 @@ function getFontFamilyFromGoogleFont( font ) {
 
 async function updateFiles() {
 	let newApiData;
-	let newData;
 	let response;
 
 	try {
@@ -117,7 +116,7 @@ async function updateFiles() {
 	const categories = getCategories( response.items );
 
 	// The data to be written to the file
-	newData = {
+	const newData = {
 		$schema: FONT_COLLECTION_SCHEMA_URL,
 		font_families: fontFamilies,
 	};
@@ -126,8 +125,15 @@ async function updateFiles() {
 		const newDataString = JSON.stringify( newData, null, 2 );
 
 		// If the file doesn't exist, create it
-		if ( ! fs.existsSync( releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ) ) ) {
-			fs.writeFileSync( releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ), '{}' );
+		if (
+			! fs.existsSync(
+				releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` )
+			)
+		) {
+			fs.writeFileSync(
+				releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
+				'{}'
+			);
 		}
 
 		const oldFileData = fs.readFileSync(
@@ -140,11 +146,15 @@ async function updateFiles() {
 		if (
 			calculateHash( newDataString ) !== calculateHash( oldDataString )
 		) {
-			fs.writeFileSync( releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ), newDataString );
+			fs.writeFileSync(
+				releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
+				newDataString
+			);
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line
 			console.info( '✅  Google Fonts JSON file updated' );
-			console.info ( 'These are the categories collected: ', categories );
+			// eslint-disable-next-line
+			console.info( 'These are the categories collected: ', categories );
 		} else {
 			// TODO: show in UI and remove console statement
 			// eslint-disable-next-line

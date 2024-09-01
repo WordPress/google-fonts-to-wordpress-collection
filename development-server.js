@@ -41,7 +41,7 @@ app.get( '/images/fonts/*', async ( req, res ) => {
 			},
 		} );
 
-		readStream.on( 'error', ( err ) => {
+		readStream.on( 'error', () => {
 			res.status( 404 ).send( `File not found: ${ filePath }` );
 		} );
 
@@ -49,6 +49,7 @@ app.get( '/images/fonts/*', async ( req, res ) => {
 		try {
 			await pipeline( readStream, transformStream, res );
 		} catch ( err ) {
+			// eslint-disable-next-line no-console
 			console.error( err );
 			if ( ! res.headersSent ) {
 				res.status( 500 ).send(
@@ -66,5 +67,6 @@ app.get( '/images/fonts/*', async ( req, res ) => {
 } );
 
 http.createServer( app ).listen( 9158, () => {
+	// eslint-disable-next-line no-console
 	console.log( 'HTTP Server running at http://localhost:9158' );
 } );

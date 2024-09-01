@@ -38,8 +38,7 @@ async function downloadFontFamilies() {
 		) {
 			facesCount++;
 
-			const url =
-				families[ i ].font_family_settings.fontFace[ x ][ 'src' ];
+			const url = families[ i ].font_family_settings.fontFace[ x ].src;
 			const relativePath = url.replace(
 				'https://fonts.gstatic.com/s/',
 				''
