@@ -122,7 +122,7 @@ async function updateFiles() {
 	};
 
 	if ( response.items ) {
-		const newDataString = JSON.stringify( newData, null, 2 );
+		const newDataString = JSON.stringify( newData, null, '\t' );
 
 		// If the file doesn't exist, create it
 		if (
@@ -141,7 +141,7 @@ async function updateFiles() {
 			'utf8'
 		);
 		const oldData = JSON.parse( oldFileData );
-		const oldDataString = JSON.stringify( oldData, null, 2 );
+		const oldDataString = JSON.stringify( oldData, null, '\t' );
 
 		if (
 			calculateHash( newDataString ) !== calculateHash( oldDataString )
