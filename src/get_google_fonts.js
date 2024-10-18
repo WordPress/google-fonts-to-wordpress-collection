@@ -15,7 +15,7 @@ const {
 	COLLECTIONS_FOLDER,
 	FONT_COLLECTION_SCHEMA_URL,
 } = require( './constants' );
-const { releasePath } = require( './utils' );
+const { releasePath, stringify } = require( './utils' );
 
 function formatCategoryName( slug ) {
 	return (
@@ -122,7 +122,7 @@ async function updateFiles() {
 	};
 
 	if ( response.items ) {
-		const newDataString = JSON.stringify( newData, null, 2 );
+		const newDataString = stringify( newData );
 
 		// If the file doesn't exist, create it
 		if (
@@ -141,7 +141,7 @@ async function updateFiles() {
 			'utf8'
 		);
 		const oldData = JSON.parse( oldFileData );
-		const oldDataString = JSON.stringify( oldData, null, 2 );
+		const oldDataString = stringify( oldData );
 
 		if (
 			calculateHash( newDataString ) !== calculateHash( oldDataString )

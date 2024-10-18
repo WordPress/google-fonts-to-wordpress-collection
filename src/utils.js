@@ -44,7 +44,16 @@ async function downloadFile( url, destPath ) {
 	} );
 }
 
+function stringify( data ) {
+	return (
+		JSON.stringify( data, null, '\t' )
+			// make single element arrays to take only one line
+			.replace( /\[\n\t+(".*?")\n\t+\]/g, '[ $1 ]' )
+	);
+}
+
 module.exports = {
 	releasePath,
 	downloadFile,
+	stringify,
 };
