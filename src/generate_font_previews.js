@@ -115,9 +115,13 @@ async function generateFontFacePreview( family, face, isAFamilyPreview ) {
 		: `${ family.name } ${ face.fontWeight } ${ face.fontStyle }`;
 
 	const downloadFolder = releasePath( DOWNLOAD_FOLDER );
-	const localFontPath = face.src.replace(
-		'https://fonts.gstatic.com/s',
-		downloadFolder
+	const customFileName = `${ family.slug }-${ face.fontWeight }-${
+		face.fontStyle
+	}${ path.extname( face.src ) }`;
+	const localFontPath = path.join(
+		downloadFolder,
+		family.slug,
+		customFileName
 	);
 
 	// Downloads font asset if it doesn't exist and if its not empty.
@@ -125,14 +129,8 @@ async function generateFontFacePreview( family, face, isAFamilyPreview ) {
 		await downloadFile( face.src, localFontPath );
 	}
 
-	// Loads font asset.
-	const fontAssetPath = face.src.replace(
-		'https://fonts.gstatic.com/s',
-		downloadFolder
-	);
-
 	// Loads font asset to TextToSVG instance.
-	const textToSVG = loadFontToTextToSVG( fontAssetPath );
+	const textToSVG = loadFontToTextToSVG( localFontPath );
 
 	// Generates SVG.
 	const attributes = { fill: 'black' };
