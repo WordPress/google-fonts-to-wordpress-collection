@@ -33,7 +33,7 @@
 		"files": "node src/download_google_font_assets.js",
 		"previews": "node src/generate_font_previews.js && npm run format:json",
 		"format": "wp-scripts format",
-		"format:json": "wp-scripts format releases/**/*.json",
+		"format:json": "wp-scripts format \"releases/**/*.json\"",
 		"lint": "npm run lint:js && npm run lint:md-docs && npm run lint:pkg-json",
 		"lint:js": "wp-scripts lint-js",
 		"lint:md-docs": "wp-scripts lint-md-docs",
