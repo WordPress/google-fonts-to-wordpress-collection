@@ -1,6 +1,8 @@
 # Google Fonts collection to WordPress Font Library collection
 
-This repo contains node.js scripts to generate the Google Fonts collection JSON and associated font previews for the WordPress Font Library.
+This repo contains node.js scripts to generate the Google Fonts collection JSON files and associated font previews for the WordPress Font Library.
+
+The generated JSON files are deployed to the w.org CDN and consumed by the Font Library in WordPress and the Gutenberg plugin.
 
 Here are examples of the JSON files these scripts generate:
 
@@ -16,6 +18,8 @@ The code in this repo:
 - Downloads each one of the font assets for the 1500+ families available.
 - Uses the font face downloaded assets to generate SVG format images with the font previews.
 - Generates a new JSON file, including the preview images link.
+
+The generated JSON files are then deployed to the w.org CDN through a Meta Trac ticket when necessary. The [7808 ticket](https://meta.trac.wordpress.org/ticket/7808) is an example of this for the WordPress 6.7 release.
 
 ## Instructions
 
