@@ -36,6 +36,8 @@ const excludedFontFamilies = [
 	'revalia',
 	'siemreap',
 	'updock',
+	// This font may be corrupted.
+	'phetsarath',
 ];
 /**
  * Internal dependencies
