@@ -9,8 +9,7 @@ const PREVIEWS_FOLDER = 'previews';
 const COLLECTIONS_FOLDER = 'collections';
 const GOOGLE_FONTS_FILE = 'google-fonts.json';
 const GOOGLE_FONTS_WITH_PREVIEWS_FILE = 'google-fonts-with-preview.json';
-const SVG_PREVIEWS_BASE_URL =
-	'https://raw.githubusercontent.com/WordPress/google-fonts-to-wordpress-collection/refs/heads/release-wp-6.9/releases/wp-6.9/previews/';
+const SVG_PREVIEWS_BASE_URL = 'https://s.w.org/images/fonts/wp-6.9/previews/';
 
 // font-collection.json schema realted constants
 const FONT_COLLECTION_SCHEMA_URL =
