@@ -5,6 +5,7 @@
  */
 const fs = require( 'fs' );
 const crypto = require( 'crypto' );
+const path = require( 'path' );
 
 /**
  * Internal dependencies
@@ -140,7 +141,7 @@ async function updateFiles() {
 		`${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }`
 	);
 	if ( ! fs.existsSync( filePath ) ) {
-		fs.mkdirSync( require( 'path' ).dirname( filePath ), {
+		fs.mkdirSync( path.dirname( filePath ), {
 			recursive: true,
 		} );
 		fs.writeFileSync( filePath, '{}' );
