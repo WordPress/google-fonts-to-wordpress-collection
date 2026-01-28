@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 /**
  * External dependencies
  */
@@ -97,18 +99,19 @@ function getFontFamilyFromGoogleFont( font ) {
 }
 
 async function updateFiles() {
-	let newApiData;
-	let response;
+	console.log( '🔨 Fetching the Google Fonts API...\n' );
 
-	try {
-		newApiData = await fetch(
-			`${ API_URL }${ API_KEY }${ GOOGLE_FONTS_CAPABILITY }`
+	const newApiData = await fetch(
+		`${ API_URL }${ API_KEY }${ GOOGLE_FONTS_CAPABILITY }`
+	);
+
+	const response = await newApiData.json();
+
+	if ( ! newApiData.ok ) {
+		console.error(
+			'❌ Error fetching the Google Fonts API:',
+			response.error.message
 		);
-		response = await newApiData.json();
-	} catch ( error ) {
-		// TODO: show in UI and remove console statement
-		// eslint-disable-next-line
-		console.error( '❎  Error fetching the Google Fonts API:', error );
 		process.exit( 1 );
 	}
 
@@ -121,52 +124,45 @@ async function updateFiles() {
 		font_families: fontFamilies,
 	};
 
-	if ( response.items ) {
-		const newDataString = stringify( newData );
-
-		// If the file doesn't exist, create it
-		if (
-			! fs.existsSync(
-				releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` )
-			)
-		) {
-			fs.writeFileSync(
-				releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
-				'{}'
-			);
-		}
-
-		const oldFileData = fs.readFileSync(
-			releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
-			'utf8'
-		);
-		const oldData = JSON.parse( oldFileData );
-		const oldDataString = stringify( oldData );
-
-		if (
-			calculateHash( newDataString ) !== calculateHash( oldDataString )
-		) {
-			fs.writeFileSync(
-				releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
-				newDataString
-			);
-			// TODO: show in UI and remove console statement
-			// eslint-disable-next-line
-			console.info( '✅  Google Fonts JSON file updated' );
-			// eslint-disable-next-line
-			console.info( 'These are the categories collected: ', categories );
-		} else {
-			// TODO: show in UI and remove console statement
-			// eslint-disable-next-line
-			console.info( 'ℹ️  Google Fonts JSON file is up to date' );
-		}
-	} else {
-		// TODO: show in UI and remove console statement
-		// eslint-disable-next-line
-		console.error(
-			'❎  No new data to check. Check the Google Fonts API key.'
-		);
+	if ( ! response.items ) {
+		console.error( '❌ No fonts found in the Google Fonts API.' );
 		process.exit( 1 );
+	}
+
+	const newDataString = stringify( newData );
+
+	// If the file doesn't exist, create it
+	const filePath = releasePath(
+		`${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }`
+	);
+	if ( ! fs.existsSync( filePath ) ) {
+		fs.mkdirSync( require( 'path' ).dirname( filePath ), {
+			recursive: true,
+		} );
+		fs.writeFileSync( filePath, '{}' );
+		console.log( `✅ Created the ${ filePath } file.\n` );
+	}
+
+	const oldFileData = fs.readFileSync(
+		releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
+		'utf8'
+	);
+	const oldData = JSON.parse( oldFileData );
+	const oldDataString = stringify( oldData );
+
+	if ( calculateHash( newDataString ) !== calculateHash( oldDataString ) ) {
+		fs.writeFileSync(
+			releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
+			newDataString
+		);
+		console.info( '✅ Google Fonts JSON file updated.\n' );
+		console.info(
+			'✅ These are the categories collected:',
+			categories,
+			'\n'
+		);
+	} else {
+		console.info( '✅ Google Fonts JSON file is up to date.\n' );
 	}
 }
 
