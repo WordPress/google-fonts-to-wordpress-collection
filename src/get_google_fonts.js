@@ -108,9 +108,13 @@ async function updateFiles() {
 	const response = await newApiData.json();
 
 	if ( ! newApiData.ok ) {
+		const errorMessage =
+			response?.error?.message ||
+			response?.message ||
+			'Unknown error response from Google Fonts API.';
 		console.error(
 			'❌ Error fetching the Google Fonts API:',
-			response.error.message
+			errorMessage
 		);
 		process.exit( 1 );
 	}
