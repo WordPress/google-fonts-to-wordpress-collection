@@ -27,7 +27,7 @@ async function downloadFontFamilies() {
 	for ( let i = 0; i < families.length; i++ ) {
 		// eslint-disable-next-line no-console
 		console.info(
-			`ℹ️  Downloading ${ families[ i ].font_family_settings.name } (${
+			`ℹ️ Downloading ${ families[ i ].font_family_settings.name } (${
 				i + 1
 			}/${ families.length })`
 		);
@@ -52,7 +52,7 @@ async function downloadFontFamilies() {
 				console.log( `✅ Downloaded to ${ destPath }` );
 			} catch ( error ) {
 				// eslint-disable-next-line no-console
-				console.error( `❎  Failed to download ${ url }: ${ error }` );
+				console.error( `❌ Failed to download ${ url }: ${ error }` );
 			}
 			// eslint-disable-next-line no-console
 			console.log( '' );
@@ -62,12 +62,12 @@ async function downloadFontFamilies() {
 	if ( facesCount === facesSuccessCount ) {
 		// eslint-disable-next-line no-console
 		console.log(
-			`🏅  Downloaded ${ facesSuccessCount } of ${ facesCount } font faces.`
+			`✅ Downloaded ${ facesSuccessCount } of ${ facesCount } font faces.`
 		);
 	} else {
 		// eslint-disable-next-line no-console
 		console.warn(
-			`🚩  Downloaded ${ facesSuccessCount } of ${ facesCount } font faces. Check for errors.`
+			`🚩 Downloaded ${ facesSuccessCount } of ${ facesCount } font faces. Check for errors.`
 		);
 	}
 }

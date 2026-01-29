@@ -106,7 +106,16 @@ async function updateFiles() {
 		`${ API_URL }${ API_KEY }${ GOOGLE_FONTS_CAPABILITY }`
 	);
 
-	const response = await newApiData.json();
+	let response;
+	try {
+		response = await newApiData.json();
+	} catch ( error ) {
+		console.error(
+			'❌ Failed to parse Google Fonts API response as JSON.'
+		);
+		console.error( error );
+		process.exit( 1 );
+	}
 
 	if ( ! newApiData.ok ) {
 		const errorMessage =
