@@ -102,9 +102,16 @@ function getFontFamilyFromGoogleFont( font ) {
 async function updateFiles() {
 	console.log( '🔨 Fetching the Google Fonts API...\n' );
 
-	const newApiData = await fetch(
-		`${ API_URL }${ API_KEY }${ GOOGLE_FONTS_CAPABILITY }`
-	);
+	let newApiData;
+	try {
+		newApiData = await fetch(
+			`${ API_URL }${ API_KEY }${ GOOGLE_FONTS_CAPABILITY }`
+		);
+	} catch ( error ) {
+		console.error( '❌ Failed to fetch from Google Fonts API.' );
+		console.error( error );
+		process.exit( 1 );
+	}
 
 	let response;
 	try {
