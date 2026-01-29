@@ -144,11 +144,11 @@ async function updateFiles() {
 	};
 
 	const newDataString = stringify( newData );
-
-	// If the file doesn't exist, create it
 	const filePath = releasePath(
 		`${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }`
 	);
+
+	// If the file doesn't exist, create it
 	if ( ! fs.existsSync( filePath ) ) {
 		fs.mkdirSync( path.dirname( filePath ), {
 			recursive: true,
@@ -157,18 +157,12 @@ async function updateFiles() {
 		console.log( `✅ Created the ${ filePath } file.\n` );
 	}
 
-	const oldFileData = fs.readFileSync(
-		releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
-		'utf8'
-	);
+	const oldFileData = fs.readFileSync( filePath, 'utf8' );
 	const oldData = JSON.parse( oldFileData );
 	const oldDataString = stringify( oldData );
 
 	if ( calculateHash( newDataString ) !== calculateHash( oldDataString ) ) {
-		fs.writeFileSync(
-			releasePath( `${ COLLECTIONS_FOLDER }/${ GOOGLE_FONTS_FILE }` ),
-			newDataString
-		);
+		fs.writeFileSync( filePath, newDataString );
 		console.info( '✅ Google Fonts JSON file updated.\n' );
 		console.info(
 			'✅ These are the categories collected:',
