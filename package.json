@@ -17,16 +17,16 @@
 		"url": "https://github.com/wordpress/google-fonts-to-wordpress-collection/issues"
 	},
 	"dependencies": {
-		"@wordpress/scripts": "^26.19.0",
-		"express": "^4.19.2",
+		"@wordpress/scripts": "^31.3.0",
+		"express": "^5.2.1",
 		"http": "^0.0.1-security",
-		"morgan": "^1.10.0",
+		"morgan": "^1.10.1",
 		"text-to-svg": "^3.1.5",
-		"wawoff2": "^1.0.0"
+		"wawoff2": "^2.0.1"
 	},
 	"devDependencies": {
-		"husky": "^8.0.0",
-		"lint-staged": "^15.2.9"
+		"husky": "^9.1.7",
+		"lint-staged": "^16.2.7"
 	},
 	"scripts": {
 		"api": "node src/get_google_fonts.js && npm run format:json",
@@ -40,7 +40,7 @@
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
 		"packages-update": "wp-scripts packages-update",
 		"serve": "node development-server.js",
-		"prepare": "husky install"
+		"prepare": "husky"
 	},
 	"lint-staged": {
 		"*.{js,json,yml,yaml}": [
