@@ -120,6 +120,11 @@ async function updateFiles() {
 		process.exit( 1 );
 	}
 
+	if ( ! response.items ) {
+		console.error( '❌ No fonts found in the Google Fonts API.' );
+		process.exit( 1 );
+	}
+
 	const fontFamilies = response.items.map( getFontFamilyFromGoogleFont );
 	const categories = getCategories( response.items );
 
@@ -128,11 +133,6 @@ async function updateFiles() {
 		$schema: FONT_COLLECTION_SCHEMA_URL,
 		font_families: fontFamilies,
 	};
-
-	if ( ! response.items ) {
-		console.error( '❌ No fonts found in the Google Fonts API.' );
-		process.exit( 1 );
-	}
 
 	const newDataString = stringify( newData );
 
