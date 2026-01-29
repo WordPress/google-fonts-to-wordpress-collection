@@ -22,7 +22,7 @@
 		"http": "^0.0.1-security",
 		"morgan": "^1.10.0",
 		"text-to-svg": "^3.1.5",
-		"woff2": "^1.0.0"
+		"wawoff2": "^1.0.0"
 	},
 	"devDependencies": {
 		"husky": "^8.0.0",

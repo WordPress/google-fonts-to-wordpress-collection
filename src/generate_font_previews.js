@@ -4,7 +4,7 @@
 const fs = require( 'fs' );
 const path = require( 'path' );
 const TextToSVG = require( 'text-to-svg' );
-const woff2 = require( 'woff2' );
+const wawoff2 = require( 'wawoff2' );
 
 /**
  * This is a collection of fonts that render poorly.  Exclude them from the preview generation.
@@ -93,15 +93,16 @@ function getPreviewFilename( family, face, isAFamilyPreview ) {
   * If the font asset is a WOFF2 file, it will be decoded to a TTF file.
 
   * @param {string} fontAssetPath - The path to the font asset.
-  * @return {TextToSVG} - The TextToSVG instance.
+  * @return {Promise<TextToSVG>} - The TextToSVG instance.
 */
-function loadFontToTextToSVG( fontAssetPath ) {
+async function loadFontToTextToSVG( fontAssetPath ) {
 	if ( fontAssetPath.endsWith( '.woff2' ) ) {
 		// Decodes WOFF2 font asset.
 		const fileData = fs.readFileSync( fontAssetPath );
 		// Writes a temporary ttf file.
 		const ttfFontAssetPath = fontAssetPath.replace( '.woff2', '.ttf' );
-		fs.writeFileSync( ttfFontAssetPath, woff2.decode( fileData ) );
+		const decodedData = await wawoff2.decompress( fileData );
+		fs.writeFileSync( ttfFontAssetPath, decodedData );
 		const textToSVG = TextToSVG.loadSync( ttfFontAssetPath );
 		// Deletes the temporary ttf file.
 		fs.unlinkSync( ttfFontAssetPath );
@@ -132,7 +133,7 @@ async function generateFontFacePreview( family, face, isAFamilyPreview ) {
 	}
 
 	// Loads font asset to TextToSVG instance.
-	const textToSVG = loadFontToTextToSVG( localFontPath );
+	const textToSVG = await loadFontToTextToSVG( localFontPath );
 
 	// Generates SVG.
 	const attributes = { fill: 'black' };
@@ -222,7 +223,7 @@ async function generatePreviews() {
 		for ( let x = 0; x < family.fontFace.length; x++ ) {
 			const face = family.fontFace[ x ];
 			try {
-				generateFontFacePreview( family, face );
+				await generateFontFacePreview( family, face );
 				updatedFamily.fontFace.push( {
 					...face,
 					preview: getPreviewUrl( family, face, false ),
