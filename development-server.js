@@ -15,9 +15,7 @@ app.get( '/images/fonts/*path', async ( req, res ) => {
 	// Serve font collections from the local filesystem at the same url paths as s.w.org for both WP and Gutenberg releases:
 	// e.g. /images/fonts/wp-6.5/... and /images/fonts/17.7/...
 	const subdir = req.url.includes( '/wp-' ) ? '' : 'gutenberg-';
-	const pathSegment = Array.isArray( req.params.path )
-		? req.params.path.join( '/' )
-		: req.params.path;
+	const pathSegment = req.params.path.join( '/' );
 	const filePath = path.join( __dirname, 'releases', subdir + pathSegment );
 
 	// Rewrite font preview URLs in the collection JSON to use the development server
