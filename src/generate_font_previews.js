@@ -244,7 +244,7 @@ async function generatePreviews() {
 
 	if ( familiesCount === familiesSuccessCount + familiesSkippedCount ) {
 		console.log(
-			`✅ Generated ${ familiesSuccessCount } of ${ familiesCount } SVG previess for font families. ${ familiesSkippedCount } were intentionally skipped.`
+			`✅ Generated ${ familiesSuccessCount } of ${ familiesCount } SVG previews for font families. ${ familiesSkippedCount } were intentionally skipped.`
 		);
 	} else {
 		console.warn(
