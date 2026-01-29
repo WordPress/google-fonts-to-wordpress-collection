@@ -191,7 +191,7 @@ async function generatePreviews() {
 			facesSkippedCount += family.fontFace.length;
 			// eslint-disable-next-line no-console
 			console.log(
-				`ℹ️ Skipping SVG previews for ${ family.name } (${
+				`ℹ️  Skipping SVG previews for ${ family.name } (${
 					i + 1
 				}/${ familiesCount })`
 			);
@@ -205,7 +205,7 @@ async function generatePreviews() {
 		try {
 			// eslint-disable-next-line no-console
 			console.log(
-				`ℹ️ Generating SVG previews for ${ family.name } (${
+				`ℹ️  Generating SVG previews for ${ family.name } (${
 					i + 1
 				}/${ familiesCount })`
 			);
@@ -215,7 +215,7 @@ async function generatePreviews() {
 		} catch ( error ) {
 			// eslint-disable-next-line no-console
 			console.error(
-				`❌ Error generating preview for ${ family.name }: ${ error }`
+				`❎  Error generating preview for ${ family.name }: ${ error }`
 			);
 		}
 
@@ -231,7 +231,7 @@ async function generatePreviews() {
 			} catch ( error ) {
 				// eslint-disable-next-line no-console
 				console.error(
-					`❌ Error generating preview for ${ family.name } ${ face.fontWeight } ${ face.fontStyle }: ${ error }`
+					`❎  Error generating preview for ${ family.name } ${ face.fontWeight } ${ face.fontStyle }: ${ error }`
 				);
 			}
 		}
@@ -245,12 +245,12 @@ async function generatePreviews() {
 	if ( familiesCount === familiesSuccessCount + familiesSkippedCount ) {
 		// eslint-disable-next-line no-console
 		console.log(
-			`✅ Generated ${ familiesSuccessCount } of ${ familiesCount } SVG previess for font families. ${ familiesSkippedCount } were intentionally skipped.`
+			`🏅  Generated ${ familiesSuccessCount } of ${ familiesCount } SVG previess for font families. ${ familiesSkippedCount } were intentionally skipped.`
 		);
 	} else {
 		// eslint-disable-next-line no-console
 		console.warn(
-			`🚩 Generated ${ familiesSuccessCount } of ${ familiesCount } SVG previews font families. Check for errors.`
+			`🚩  Generated ${ familiesSuccessCount } of ${ familiesCount } SVG previews font families. Check for errors.`
 		);
 	}
 	if ( facesCount === facesSuccessCount + facesSkippedCount ) {
@@ -258,12 +258,12 @@ async function generatePreviews() {
 		updateGoogleFontsFileWithPreviews( updatedFontFamilies );
 		// eslint-disable-next-line no-console
 		console.log(
-			`✅ Generated ${ facesSuccessCount } SVG previews of ${ facesCount } font faces. ${ facesSkippedCount } were intentionally skipped.`
+			`🏅  Generated ${ facesSuccessCount } SVG previews of ${ facesCount } font faces. ${ facesSkippedCount } were intentionally skipped.`
 		);
 	} else {
 		// eslint-disable-next-line no-console
 		console.warn(
-			`🚩 Generated ${ facesSuccessCount } SVG previews of ${ facesCount } font faces. Check for errors.`
+			`🚩  Generated ${ facesSuccessCount } SVG previews of ${ facesCount } font faces. Check for errors.`
 		);
 	}
 }
@@ -276,7 +276,7 @@ function processExitHandler() {
 	);
 	// eslint-disable-next-line no-console
 	console.error(
-		`❌ Script terminated. The previews files generated were not added to ${ GOOGLE_FONTS_WITH_PREVIEWS_FILE } file.`
+		`❎ Script terminated. The previews files generated were not added to ${ GOOGLE_FONTS_WITH_PREVIEWS_FILE } file.`
 	);
 	// eslint-disable-next-line no-console
 	console.log(
@@ -298,7 +298,7 @@ if ( process.argv[ 2 ] ) {
 	);
 	if ( ! fontFamily ) {
 		// eslint-disable-next-line no-console
-		console.error( `❌ Font family ${ fontFamilyName } not found.` );
+		console.error( `❎ Font family ${ fontFamilyName } not found.` );
 		process.exit( 1 );
 	}
 	generateFontFamilyPreview( fontFamily.font_family_settings );
