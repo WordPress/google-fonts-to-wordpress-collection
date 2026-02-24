@@ -39,6 +39,7 @@
 		"lint:md-docs": "wp-scripts lint-md-docs",
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
 		"packages-update": "wp-scripts packages-update",
+		"test": "node --test tests/*.test.js",
 		"serve": "node development-server.js",
 		"prepare": "husky"
 	},

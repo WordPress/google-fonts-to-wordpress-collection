@@ -66,6 +66,9 @@ npm run packages-update
 
 # Start the development server on port 9158
 npm run serve
+
+# Run validation tests (after npm run api and npm run previews)
+npm test
 ```
 
 For more details on how to use these commands, see README.md.
@@ -94,9 +97,11 @@ Follow these steps in order when creating a new version of the font collection:
 
     This generates `releases/{version}/previews/` and `releases/{version}/collections/google-fonts-with-preview.json`. Expect this to take a long time.
 
-4.  Test locally using the development server (`npm run serve`) and a local WordPress instance. See README.md for setup details.
+4.  Run `npm test` to validate the generated files before testing in WordPress.
 
-5.  Commit the following files:
+5.  Test locally using the development server (`npm run serve`) and a local WordPress instance. See README.md for setup details.
+
+6.  Commit the following files:
     -   `src/constants.js`
     -   `releases/{version}/collections/google-fonts.json`
     -   `releases/{version}/collections/google-fonts-with-preview.json`
@@ -104,7 +109,7 @@ Follow these steps in order when creating a new version of the font collection:
 
     Do not commit `font-assets/` — it is gitignored and only used as intermediate storage.
 
-6.  After merge, a meta.trac ticket must be filed to host the files on the CDN, and a patch submitted to wordpress-develop to update the CDN URLs. These steps require human follow-up.
+7.  After merge, a meta.trac ticket must be filed to host the files on the CDN, and a patch submitted to wordpress-develop to update the CDN URLs. These steps require human follow-up.
 
 ## Conventions to Follow
 
@@ -117,3 +122,4 @@ Follow these steps in order when creating a new version of the font collection:
 -   Excluded fonts: Some fonts are skipped during preview generation due to rendering issues (icon fonts, certain scripts). If a new font causes `npm run previews` to fail, add its slug to the `excludedFontFamilies` array in `src/generate_font_previews.js`.
 -   Step order: Always run `npm run api` before `npm run previews`. The previews script reads the JSON file produced by the API script.
 -   `npm run files` is optional: The `npm run previews` script downloads font assets automatically. The `npm run files` command exists if you need the assets separately.
+-   Tests must be run after both `npm run api` and `npm run previews` — they validate the generated output and will fail if either step hasn't been run yet.
