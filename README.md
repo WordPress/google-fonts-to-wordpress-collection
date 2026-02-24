@@ -101,7 +101,7 @@ New releases added via PR can be tested on a local site. To serve the fonts from
 npm run serve
 ```
 
-Add the following filters to an mu-plugin running on your local WordPress site (e.g. `wp-content/mu-plugins/0-local.php`). These codes register a new font collection based on the new fonts served from the development server and grant it access to the development server.
+Add the following filters to an mu-plugin running on your local WordPress site (e.g. `wp-content/mu-plugins/0-local.php`). This will register a new font collection based on the new fonts served from the development server and grant it access to the development server.
 
 Note that you need to update the `$fonts_version` with the new version. e.g. For WordPress 7.0, `$fonts_version` should be `wp-7.0`.
 
