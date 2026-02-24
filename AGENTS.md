@@ -1,5 +1,9 @@
 # AGENTS.md
 
+This file provides guidance to AI coding agents working in this repository.
+
+## Repository Overview
+
 This repo contains Node scripts to generate the Google Fonts collection JSON files and associated font previews for the WordPress Font Library.
 
 The generated JSON files are deployed to the w.org CDN and consumed by the Font Library in WordPress and the Gutenberg plugin.
