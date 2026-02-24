@@ -82,7 +82,7 @@ If the font preview fails to generate due to a possibly corrupted font, consider
 
 ### 5. Create a PR
 
-Now you're ready to create a pull request. The modified files/directory should look like this, commit them, and submit the PR:
+Now you're ready to create a pull request. The modified files/directory should look like this. Commit these changes, and submit the PR:
 
 -   Modifiled:
     -   `src/constants.js`
