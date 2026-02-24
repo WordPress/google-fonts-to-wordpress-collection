@@ -129,10 +129,13 @@ test( 'first font face in with-preview file has a preview string', () => {
 } );
 
 test( 'preview SVG file for the first font family exists on disk', () => {
-	const {
-		slug,
-	} = googleFontsWithPreview.font_families[ 0 ].font_family_settings;
-	const svgPath = path.join( previewsDir, slug, `${ slug }.svg` );
+	const settings =
+		googleFontsWithPreview.font_families[ 0 ].font_family_settings;
+	const svgPath = path.join(
+		previewsDir,
+		settings.slug,
+		`${ settings.slug }.svg`
+	);
 
 	assert.ok(
 		fs.existsSync( svgPath ),
@@ -141,13 +144,11 @@ test( 'preview SVG file for the first font family exists on disk', () => {
 } );
 
 test( 'preview SVG file for the first font face exists on disk', () => {
-	const {
-		slug,
-		fontFace,
-	} = googleFontsWithPreview.font_families[ 0 ].font_family_settings;
-	const { fontWeight, fontStyle } = fontFace[ 0 ];
-	const svgName = `${ slug }-${ fontWeight }-${ fontStyle }.svg`;
-	const svgPath = path.join( previewsDir, slug, svgName );
+	const settings =
+		googleFontsWithPreview.font_families[ 0 ].font_family_settings;
+	const { fontWeight, fontStyle } = settings.fontFace[ 0 ];
+	const svgName = `${ settings.slug }-${ fontWeight }-${ fontStyle }.svg`;
+	const svgPath = path.join( previewsDir, settings.slug, svgName );
 
 	assert.ok(
 		fs.existsSync( svgPath ),
