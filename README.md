@@ -70,7 +70,7 @@ This script will create a new `releases/{wp-X.X}/collections/google-fonts.json` 
 
 ### 4. Generate SVG Previews for Google Fonts
 
-Generates SVG preview images for each font family and font face from the Google Fonts collection. The script iterates over the list of font families, downloads the font assets, uses them to generate SVG preview images, and creates a new JSON file with preview image links. The updated JSON file is saved as `releases/{wp-X.X}/collections/google-fonts-with-preview.json`.
+Generate SVG preview images for each font family and font face from the Google Fonts collection. The script below iterates over the list of font families, downloads the font assets, uses them to generate SVG preview images, and creates a new JSON file with preview image links. The updated JSON file is saved as `releases/{wp-X.X}/collections/google-fonts-with-preview.json`.
 
 ```bash
 npm run previews
