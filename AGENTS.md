@@ -36,7 +36,6 @@ See README.md for more details.
 -   `font-assets/`: Downloaded font files used during preview generation. Gitignored — safe to delete.
 -   `development-server.js`: Express server for testing the collection locally against a WordPress instance.
 -   `README.md`: Contains the README file.
--   `LICENSE`: Contains the license file.
 -   `package.json`: Contains the package dependencies.
 -   `package-lock.json`: Contains the package lock file.
 
