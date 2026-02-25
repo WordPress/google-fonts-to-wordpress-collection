@@ -10,8 +10,8 @@ The generated JSON files are deployed to the w.org CDN and consumed by the Font 
 
 Here are examples of the JSON files these scripts generate:
 
-<https://s.w.org/images/fonts/17.7/collections/google-fonts.json>
-<https://s.w.org/images/fonts/17.7/collections/google-fonts-with-preview.json>
+<https://s.w.org/images/fonts/wp-7.0/collections/google-fonts.json>
+<https://s.w.org/images/fonts/wp-7.0/collections/google-fonts-with-preview.json>
 
 See README.md for more details.
 
