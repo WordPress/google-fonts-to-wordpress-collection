@@ -52,7 +52,7 @@ First, Update the `CURRENT_RELEASE` and `SVG_PREVIEWS_BASE_URL` constants in `sr
 
 ### 3. Fetch Google Fonts Data
 
-Fetches font data from the Google Fonts API and converts it to a WordPress `theme.json` like format to be compatible with the new WordPress Font Library collections. Create a Google API key on [the credentials page](https://console.cloud.google.com/apis/credentials) and set it as the `GOOGLE_FONTS_API_KEY` environment variable:
+Fetches font data from the Google Fonts API and converts it to a WordPress `theme.json` like format to be compatible with the new WordPress Font Library collections. Create a Google API key on [the credentials page](https://console.cloud.google.com/apis/credentials), enable the Web Fonts Developer API for that project, and set it as the `GOOGLE_FONTS_API_KEY` environment variable:
 
 ```bash
 GOOGLE_FONTS_API_KEY={YOUR_GOOGLE_FONTS_API_KEY} npm run api
