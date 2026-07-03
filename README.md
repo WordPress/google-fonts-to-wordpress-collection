@@ -91,7 +91,7 @@ Now you're ready to create a pull request. The modified files/directory should l
     -   `releases/{wp-X.X}/collections/google-fonts-with-preview.json`
     -   `releases/{wp-X.X}/previews/*`
 
-Note that `releases/{wp-X.X}/font-assets/*` is gitignored. The ~font-assets` directory contains intermediate files used only for generating SVG previews.
+Note that `releases/{wp-X.X}/font-assets/*` is gitignored. The `font-assets` directory contains intermediate files used only for generating SVG previews.
 
 ### 6. Test the PR
 
@@ -101,11 +101,20 @@ New releases added via PR can be tested on a local site. To serve the fonts from
 npm run serve
 ```
 
+**Note: The collection is fetched server-side by WordPress, not by your browser.** So the development server must be reachable from the environment where WordPress runs, not just from your browser. Otherwise `http://localhost:9158` can work in the browser but fail from WordPress, and the collection appears empty even though opening the URL directly works.
+
+Run the development server in the same environment as your WordPress site so both share the same `localhost`. For example, if WordPress runs on your host OS but you start the development server inside a container/VM (Windows Subsystem for Linux), it may not be reachable.
+
 Add the following filters to an mu-plugin running on your local WordPress site (e.g. `wp-content/mu-plugins/0-local.php`). This will register a new font collection based on the new fonts served from the development server and grant it access to the development server.
 
 Note that you need to update the `$fonts_version` with the new version. e.g. For WordPress 7.0, `$fonts_version` should be `wp-7.0`.
 
 ```php
+<?php
+/**
+ * Plugin Name: New Google Fonts Collection test
+ */
+
 // Register new Google Fonts font collection
 function test_new_google_fonts_font_collection() {
 	// Replace with the new version. e.g. 'wp-7.0'.
